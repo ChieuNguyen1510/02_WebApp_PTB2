@@ -22,7 +22,7 @@ if not st.session_state["logged_in"]:
         if username in credentials and credentials[username] == password:
             st.success("✅ Đăng nhập thành công!")
             st.session_state["logged_in"] = True
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.error("❌ Sai tên đăng nhập hoặc mật khẩu.")
 
