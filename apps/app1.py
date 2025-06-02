@@ -1,25 +1,52 @@
 import streamlit as st
-import math
+
+def convert_length(value, from_unit, to_unit):
+    factors = {
+        "mm": 1,
+        "cm": 10,
+        "m": 1000,
+        "km": 1_000_000,
+        "inch": 25.4,
+        "ft": 304.8,
+    }
+    return value * factors[from_unit] / factors[to_unit]
+
+def convert_area(value, from_unit, to_unit):
+    factors = {
+        "mm²": 1,
+        "cm²": 100,
+        "m²": 1_000_000,
+        "ha": 10_000_000_000,
+    }
+    return value * factors[from_unit] / factors[to_unit]
+
+def convert_force(value, from_unit, to_unit):
+    factors = {
+        "N": 1,
+        "kN": 1_000,
+        "tf": 9_806.65,  # 1 tấn lực = 9806.65 N
+    }
+    return value * factors[from_unit] / factors[to_unit]
 
 def run():
-    st.header("📐 Giải Phương Trình Bậc 2")
-    a = st.number_input("Nhập a", value=1.0)
-    b = st.number_input("Nhập b", value=0.0)
-    c = st.number_input("Nhập c", value=0.0)
+    st.header("🔁 Đổi Đơn Vị")
 
-    if st.button("Giải"):
-        if a == 0:
-            if b == 0:
-                st.write("⛔ Không phải phương trình.")
-            else:
-                st.write(f"✅ Nghiệm x = {-c / b:.2f}")
-        else:
-            delta = b**2 - 4*a*c
-            if delta < 0:
-                st.write("⛔ Vô nghiệm.")
-            elif delta == 0:
-                st.write(f"✅ Nghiệm kép x = {-b / (2*a):.2f}")
-            else:
-                x1 = (-b + math.sqrt(delta)) / (2*a)
-                x2 = (-b - math.sqrt(delta)) / (2*a)
-                st.write(f"✅ x1 = {x1:.2f}, x2 = {x2:.2f}")
+    category = st.selectbox("Chọn loại đơn vị:", ["Chiều dài", "Diện tích", "Nội lực"])
+
+    if category == "Chiều dài":
+        units = ["mm", "cm", "m", "km", "inch", "ft"]
+        convert_fn = convert_length
+    elif category == "Diện tích":
+        units = ["mm²", "cm²", "m²", "ha"]
+        convert_fn = convert_area
+    else:
+        units = ["N", "kN", "tf"]
+        convert_fn = convert_force
+
+    value = st.number_input("Giá trị cần đổi", value=0.0)
+    from_unit = st.selectbox("Từ đơn vị", options=units, key="from")
+    to_unit = st.selectbox("Sang đơn vị", options=units, key="to")
+
+    if st.button("Chuyển đổi"):
+        result = convert_fn(value, from_unit, to_unit)
+        st.success(f"✅ {value} {from_unit} = {result:.4f} {to_unit}")
