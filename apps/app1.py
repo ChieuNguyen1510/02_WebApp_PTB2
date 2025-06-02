@@ -1,66 +1,98 @@
 import streamlit as st
 
-def convert_length(value, from_unit, to_unit):
-    factors = {
-        "mm": 1,
-        "cm": 10,
-        "m": 1000,
-        "km": 1_000_000,
-        "inch": 25.4,
-        "ft": 304.8,
-    }
-    return value * factors[from_unit] / factors[to_unit]
+# ===== Các hàm chuyển đổi đơn vị =====
 
-def convert_area(value, from_unit, to_unit):
-    factors = {
-        "mm²": 1,
-        "cm²": 100,
-        "m²": 1_000_000,
-        "ha": 10_000_000_000,
-    }
-    return value * factors[from_unit] / factors[to_unit]
-
-def convert_force(value, from_unit, to_unit):
-    factors = {
-        "N": 1,
-        "kN": 1_000,
-        "MN": 1_000_000,
-        "tf": 9_806.65,  # tấn lực
-    }
-    return value * factors[from_unit] / factors[to_unit]
-
-def convert_pressure(value, from_unit, to_unit):
-    factors = {
-        "Pa": 1,
-        "kPa": 1_000,
-        "MPa": 1_000_000,
-        "psi": 6_894.76,
-        "atm": 101_325,
-    }
+def convert_unit(value, from_unit, to_unit, factors):
     return value * factors[from_unit] / factors[to_unit]
 
 def run():
-    st.header("🔁 Đổi Đơn Vị")
+    st.title("🧮 ĐỔI ĐƠN VỊ")
 
-    category = st.selectbox("Chọn loại đơn vị:", ["Lực", "Độ dài", "Diện tích", "Áp lực"])
+    tabs = st.tabs(["Lực", "Độ dài", "Áp lực", "Mômen"])
 
-    if category == "Lực":
-        units = ["N", "kN", "MN", "tf"]
-        convert_fn = convert_force
-    elif category == "Độ dài":
-        units = ["mm", "cm", "m", "km", "inch", "ft"]
-        convert_fn = convert_length
-    elif category == "Diện tích":
-        units = ["mm²", "cm²", "m²", "ha"]
-        convert_fn = convert_area
-    else:  # Áp lực
-        units = ["Pa", "kPa", "MPa", "psi", "atm"]
-        convert_fn = convert_pressure
+    # ========== Tab LỰC ==========
+    with tabs[0]:
+        st.subheader("🔧 Lực")
+        factors = {
+            "N": 1,
+            "daN": 10,
+            "kN": 1_000,
+            "T": 9_806.65,
+        }
+        unit_list = list(factors.keys())
 
-    value = st.number_input("Giá trị cần đổi", value=0.0)
-    from_unit = st.selectbox("Từ đơn vị", options=units, key="from")
-    to_unit = st.selectbox("Sang đơn vị", options=units, key="to")
+        value = st.number_input("Giá trị chuyển đổi", value=1.0, key="force_val")
+        col1, col2 = st.columns(2)
+        with col1:
+            from_unit = st.radio("Từ:", unit_list, key="force_from")
+        with col2:
+            to_unit = st.radio("Sang:", unit_list, key="force_to")
 
-    if st.button("Chuyển đổi"):
-        result = convert_fn(value, from_unit, to_unit)
-        st.success(f"✅ {value} {from_unit} = {result:.4f} {to_unit}")
+        result = convert_unit(value, from_unit, to_unit, factors)
+        st.markdown(f"### ✅ Kết quả: **{value} {from_unit} = {result:.4f} {to_unit}**")
+
+    # ========== Tab ĐỘ DÀI ==========
+    with tabs[1]:
+        st.subheader("📏 Độ dài")
+        factors = {
+            "mm": 1,
+            "cm": 10,
+            "m": 1000,
+            "km": 1_000_000,
+            "inch": 25.4,
+            "ft": 304.8,
+        }
+        unit_list = list(factors.keys())
+
+        value = st.number_input("Giá trị chuyển đổi", value=1.0, key="len_val")
+        col1, col2 = st.columns(2)
+        with col1:
+            from_unit = st.radio("Từ:", unit_list, key="len_from")
+        with col2:
+            to_unit = st.radio("Sang:", unit_list, key="len_to")
+
+        result = convert_unit(value, from_unit, to_unit, factors)
+        st.markdown(f"### ✅ Kết quả: **{value} {from_unit} = {result:.4f} {to_unit}**")
+
+    # ========== Tab ÁP LỰC ==========
+    with tabs[2]:
+        st.subheader("💥 Áp lực")
+        factors = {
+            "Pa": 1,
+            "kPa": 1_000,
+            "MPa": 1_000_000,
+            "bar": 100_000,
+            "atm": 101_325,
+            "psi": 6_894.76,
+        }
+        unit_list = list(factors.keys())
+
+        value = st.number_input("Giá trị chuyển đổi", value=1.0, key="pressure_val")
+        col1, col2 = st.columns(2)
+        with col1:
+            from_unit = st.radio("Từ:", unit_list, key="pressure_from")
+        with col2:
+            to_unit = st.radio("Sang:", unit_list, key="pressure_to")
+
+        result = convert_unit(value, from_unit, to_unit, factors)
+        st.markdown(f"### ✅ Kết quả: **{value} {from_unit} = {result:.4f} {to_unit}**")
+
+    # ========== Tab MÔMEN ==========
+    with tabs[3]:
+        st.subheader("🔄 Mômen")
+        factors = {
+            "N·m": 1,
+            "kN·m": 1_000,
+            "tf·m": 9_806.65,
+        }
+        unit_list = list(factors.keys())
+
+        value = st.number_input("Giá trị chuyển đổi", value=1.0, key="moment_val")
+        col1, col2 = st.columns(2)
+        with col1:
+            from_unit = st.radio("Từ:", unit_list, key="moment_from")
+        with col2:
+            to_unit = st.radio("Sang:", unit_list, key="moment_to")
+
+        result = convert_unit(value, from_unit, to_unit, factors)
+        st.markdown(f"### ✅ Kết quả: **{value} {from_unit} = {result:.4f} {to_unit}**")
