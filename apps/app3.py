@@ -39,6 +39,7 @@ def run():
             {"Grade": "CB300", "fyk": 300, "ftk": 500, "Es": 200000, "Standard": "TCVN 1651-1"},
             {"Grade": "CB400-V", "fyk": 400, "ftk": 570, "Es": 200000, "Standard": "TCVN 1651-2"},
             {"Grade": "CB500-V", "fyk": 500, "ftk": 630, "Es": 200000, "Standard": "TCVN 1651-2"},
+            {"Grade": "B500B", "fyk": 500, "ftk": 540, "Es": 200000, "Standard": "EN 1992-1-1 / EN 10080"},
         ]
         df_rebar = pd.DataFrame(data_rebar)
 
@@ -50,3 +51,10 @@ def run():
         st.write(f"**Yield strength f<sub>yk</sub>** (MPa): `{selected.fyk}`", unsafe_allow_html=True)
         st.write(f"**Ultimate strength f<sub>tk</sub>** (MPa): `{selected.ftk}`", unsafe_allow_html=True)
         st.write(f"**Modulus of elasticity E<sub>s</sub>** (MPa): `{selected.Es}`", unsafe_allow_html=True)
+
+        with st.expander("📘 Notes"):
+            st.markdown("""
+            - **B500B** is the most common grade in Eurocode.
+            - It is defined in **EN 1992-1-1** and **EN 10080**.
+            - The design yield strength is typically 500 MPa.
+            """)
