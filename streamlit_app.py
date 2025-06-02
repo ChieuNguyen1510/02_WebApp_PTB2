@@ -5,7 +5,7 @@ st.set_page_config(page_title="Ứng dụng Tổng hợp", layout="centered")
 
 # Danh sách apps
 apps = {
-    "Giải PT bậc 2": app1.run,
+    "Convert Unit": app1.run,
     "Tính diện tích tam giác": app2.run,
     "Chuyển đổi độ C ↔ F": app3.run,
     "Tính BMI": app4.run,
