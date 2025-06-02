@@ -11,12 +11,12 @@ def run():
         st.subheader("🟦 Steel Plates")
 
         data_plate = [
-            {"Grade": "S235", "fy": 235, "fu": 360, "Standard": "EN 10025"},
-            {"Grade": "S275", "fy": 275, "fu": 410, "Standard": "EN 10025"},
-            {"Grade": "S355", "fy": 355, "fu": 510, "Standard": "EN 10025"},
-            {"Grade": "A36",  "fy": 250, "fu": 400, "Standard": "ASTM A36"},
-            {"Grade": "Q235", "fy": 235, "fu": 375, "Standard": "GB/T 700"},
-            {"Grade": "Q345", "fy": 345, "fu": 470, "Standard": "GB/T 1591"},
+            {"Grade": "S235", "fy": 235, "fu": 360, "Es": 200000, "Standard": "EN 10025"},
+            {"Grade": "S275", "fy": 275, "fu": 410, "Es": 200000, "Standard": "EN 10025"},
+            {"Grade": "S355", "fy": 355, "fu": 510, "Es": 200000, "Standard": "EN 10025"},
+            {"Grade": "A36",  "fy": 250, "fu": 400, "Es": 200000, "Standard": "ASTM A36"},
+            {"Grade": "Q235", "fy": 235, "fu": 375, "Es": 200000, "Standard": "GB/T 700"},
+            {"Grade": "Q345", "fy": 345, "fu": 470, "Es": 200000, "Standard": "GB/T 1591"},
         ]
         df_plate = pd.DataFrame(data_plate)
 
@@ -27,6 +27,7 @@ def run():
         st.write(f"**Standard:** {selected.Standard}")
         st.write(f"**Yield strength f<sub>y</sub>** (MPa): `{selected.fy}`", unsafe_allow_html=True)
         st.write(f"**Ultimate strength f<sub>u</sub>** (MPa): `{selected.fu}`", unsafe_allow_html=True)
+        st.write(f"**Modulus of elasticity E<sub>s</sub>** (MPa): `{selected.Es}`", unsafe_allow_html=True)
 
     # ========== TAB 2: THÉP TRÒN ==========
     with tab2:
@@ -51,10 +52,3 @@ def run():
         st.write(f"**Yield strength f<sub>yk</sub>** (MPa): `{selected.fyk}`", unsafe_allow_html=True)
         st.write(f"**Ultimate strength f<sub>tk</sub>** (MPa): `{selected.ftk}`", unsafe_allow_html=True)
         st.write(f"**Modulus of elasticity E<sub>s</sub>** (MPa): `{selected.Es}`", unsafe_allow_html=True)
-
-        with st.expander("📘 Notes"):
-            st.markdown("""
-            - **B500B** is the most common grade in Eurocode.
-            - It is defined in **EN 1992-1-1** and **EN 10080**.
-            - The design yield strength is typically 500 MPa.
-            """)
