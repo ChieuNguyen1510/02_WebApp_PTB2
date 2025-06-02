@@ -24,24 +24,38 @@ def convert_force(value, from_unit, to_unit):
     factors = {
         "N": 1,
         "kN": 1_000,
-        "tf": 9_806.65,  # 1 tấn lực = 9806.65 N
+        "MN": 1_000_000,
+        "tf": 9_806.65,  # tấn lực
+    }
+    return value * factors[from_unit] / factors[to_unit]
+
+def convert_pressure(value, from_unit, to_unit):
+    factors = {
+        "Pa": 1,
+        "kPa": 1_000,
+        "MPa": 1_000_000,
+        "psi": 6_894.76,
+        "atm": 101_325,
     }
     return value * factors[from_unit] / factors[to_unit]
 
 def run():
     st.header("🔁 Đổi Đơn Vị")
 
-    category = st.selectbox("Chọn loại đơn vị:", ["Chiều dài", "Diện tích", "Nội lực"])
+    category = st.selectbox("Chọn loại đơn vị:", ["Lực", "Độ dài", "Diện tích", "Áp lực"])
 
-    if category == "Chiều dài":
+    if category == "Lực":
+        units = ["N", "kN", "MN", "tf"]
+        convert_fn = convert_force
+    elif category == "Độ dài":
         units = ["mm", "cm", "m", "km", "inch", "ft"]
         convert_fn = convert_length
     elif category == "Diện tích":
         units = ["mm²", "cm²", "m²", "ha"]
         convert_fn = convert_area
-    else:
-        units = ["N", "kN", "tf"]
-        convert_fn = convert_force
+    else:  # Áp lực
+        units = ["Pa", "kPa", "MPa", "psi", "atm"]
+        convert_fn = convert_pressure
 
     value = st.number_input("Giá trị cần đổi", value=0.0)
     from_unit = st.selectbox("Từ đơn vị", options=units, key="from")
