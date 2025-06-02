@@ -6,10 +6,10 @@ st.set_page_config(page_title="General Application", layout="centered")
 # Danh sách apps
 apps = {
     "Convert Unit": app1.run,
-    "Tính diện tích tam giác": app2.run,
-    "Chuyển đổi độ C ↔ F": app3.run,
-    "Tính BMI": app4.run,
-    "Số ngày giữa 2 mốc": app5.run
+    "Concrete strength": app2.run,
+    "Steel strength": app3.run,
+    "Reinforcement area": app4.run,
+    "Loading": app5.run
 }
 
 # Giao diện lựa chọn
