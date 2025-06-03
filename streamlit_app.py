@@ -23,7 +23,7 @@ LANG = {
             "Loading": "Loading",
             "Load Combination": "Load Combination",
             "Section Calculator": "Section Calculator",
-            "Column PM Interaction": "Column PM Interaction"
+            "Column PM Interaction": "Column PM Interaction",
             "Anchor Bolt Capacity": "Anchor Bolt Capacity"
         }
     },
@@ -39,7 +39,7 @@ LANG = {
             "Loading": "Tải trọng",
             "Load Combination": "Tổ hợp tải trọng",
             "Section Calculator": "Tính tiết diện",
-            "Column PM Interaction": "Kiểm tra cột"
+            "Column PM Interaction": "Kiểm tra cột",
             "Anchor Bolt Capacity": "Kiểm tra bulong"
         }
     }
