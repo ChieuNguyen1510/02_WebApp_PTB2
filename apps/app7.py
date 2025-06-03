@@ -194,7 +194,7 @@ def run():
         st.markdown("### " + _("Select Standard Section Type", "Chọn loại tiết diện tiêu chuẩn"))
         section_type = st.selectbox(
             _("Section type:", "Loại tiết diện:"),
-            ["IPE", "SHS"]
+            ["IPE - I", "SHS - 🔲"]
         )
 
         # Hiển thị bảng tra
@@ -208,16 +208,3 @@ def run():
             df = df[["h", "b", "t", "A", "Ix", "Iy"]]
             df.columns = ["h (mm)", "b (mm)", "t (mm)", "A (cm²)", "Ix (cm⁴)", "Iy (cm⁴)"]
         st.dataframe(df, use_container_width=True, height=300)
-
-        # Hiển thị hình minh họa tổng quát
-        st.markdown("### " + _("Section Illustration", "Hình minh họa tiết diện"))
-        if section_type == "IPE":
-            # Sử dụng thông số mẫu cho hình chữ I
-            h, b, tw, tf = 200, 100, 5.6, 8.5  # Thông số mẫu cho IPE
-            fig = draw_h_section(h, b, tw, tf)
-        elif section_type == "SHS":
-            # Sử dụng thông số mẫu cho hình chữ nhật
-            h, b = 100, 100  # Thông số mẫu cho SHS
-            fig = draw_rectangle(h, b)
-        if fig is not None:
-            st.pyplot(fig)
