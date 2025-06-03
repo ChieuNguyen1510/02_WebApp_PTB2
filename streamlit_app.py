@@ -12,13 +12,25 @@ except ImportError as e:
 st.set_page_config(page_title="General Engineering Toolkit", layout="centered")
 
 
-# Thêm đoạn này vào đầu file Streamlit của bạn
-st.markdown("""
+# Ẩn thanh công cụ và nút "Manage app"aaaaâ
+st.markdown(
+    """
     <style>
-    footer {visibility: hidden;}
-    .viewerBadge_container__1QSob {display: none;}
+        /* Ẩn các nút Share, Star, Edit, GitHub */
+        [data-testid="stToolbar"] {
+            display: none !important;
+        }
+        [data-testid="stAppViewBlockContainer"] > div > div > div > div > div {
+            display: none !important;
+        }
+        /* Ẩn nút Manage app */
+        [data-testid="manage-app-button"] {
+            display: none !important;
+        }
     </style>
-""", unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True
+)
 # ---------- Ngôn ngữ ----------
 LANG = {
     "en": {
