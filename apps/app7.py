@@ -18,14 +18,14 @@ def run():
 
     # Bảng tra tiết diện tiêu chuẩn
     standard_sections = {
-        "IPE": {
+        "IPE - I": {
             "IPE 80": {"h": 80, "b": 46, "tw": 3.8, "tf": 5.2, "A": 7.64, "Ix": 80.1, "Iy": 8.49},
             "IPE 100": {"h": 100, "b": 55, "tw": 4.1, "tf": 5.7, "A": 10.3, "Ix": 171.0, "Iy": 15.9},
             "IPE 120": {"h": 120, "b": 64, "tw": 4.4, "tf": 6.3, "A": 13.2, "Ix": 317.8, "Iy": 27.7},
             "IPE 200": {"h": 200, "b": 100, "tw": 5.6, "tf": 8.5, "A": 28.5, "Ix": 1943.0, "Iy": 142.4},
             "IPE 240": {"h": 240, "b": 120, "tw": 6.2, "tf": 9.8, "A": 39.1, "Ix": 3892.0, "Iy": 290.2},
         },
-        "SHS": {
+        "SHS - ⬜": {
             "SHS 50x50x2": {"h": 50, "b": 50, "t": 2.0, "A": 3.81, "Ix": 17.0, "Iy": 17.0},
             "SHS 100x100x3": {"h": 100, "b": 100, "t": 3.0, "A": 11.7, "Ix": 166.5, "Iy": 166.5},
             "SHS 150x150x5": {"h": 150, "b": 150, "t": 5.0, "A": 28.3, "Ix": 614.9, "Iy": 614.9},
@@ -194,17 +194,17 @@ def run():
         st.markdown("### " + _("Select Standard Section Type", "Chọn loại tiết diện tiêu chuẩn"))
         section_type = st.selectbox(
             _("Section type:", "Loại tiết diện:"),
-            ["IPE - I", "SHS - 🔲"]
+            ["IPE - I", "SHS - ⬜"]
         )
 
         # Hiển thị bảng tra
         st.markdown("### " + _("Section Table", "Bảng tra tiết diện"))
         section_data = standard_sections[section_type]
         df = pd.DataFrame.from_dict(section_data, orient='index')
-        if section_type == "IPE":
+        if section_type == "IPE - I":
             df = df[["h", "b", "tw", "tf", "A", "Ix", "Iy"]]
             df.columns = ["h (mm)", "b (mm)", "tw (mm)", "tf (mm)", "A (cm²)", "Ix (cm⁴)", "Iy (cm⁴)"]
-        elif section_type == "SHS":
+        elif section_type == "SHS - ⬜":
             df = df[["h", "b", "t", "A", "Ix", "Iy"]]
             df.columns = ["h (mm)", "b (mm)", "t (mm)", "A (cm²)", "Ix (cm⁴)", "Iy (cm⁴)"]
         st.dataframe(df, use_container_width=True, height=300)
