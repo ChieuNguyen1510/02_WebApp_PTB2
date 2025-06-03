@@ -84,4 +84,4 @@ def run():
         with col2:
             if st.button("❌ Clear"):
                 del st.session_state["combination_df"]
-                st.experimental_rerun()
+                st.rerun()
