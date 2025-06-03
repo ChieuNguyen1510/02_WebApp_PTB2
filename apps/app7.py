@@ -166,24 +166,24 @@ def run():
 
             elif section_type == "⭕ Hollow Circle":
                 D = st.number_input(_("Outer diameter D (mm)", "Đường kính ngoài D (mm)"), min_value=0.1, value=120.0)
-                d = st.number_input(_("Inner diameter d (mm)", "Đường kính trong d (mm)"), min_value=0.0, value=100.0)
+                d = st.number_input(_("Inner diameter d (mm)", "Đường kính trong d (mm)"), min_value=0.0, value=80.0)
                 if D <= d:
-                    st.error(_("Outer diameter must be greater than inner diameter!", ""))
+                    st.error(_("Outer diameter must be greater than inner diameter!", 
+                               "Đường kính ngoài phải lớn hơn đường kính trong!"))
                     return
                 A = (np.pi/4) * (D**2 - d**2)
-                Ix = Iy = (np.pi * (D**4 - d**4)) / 64
-                Wx = Ix / (D/4)
-                Wy = Iy / (D/4)
+                Ix = Iy = (np.pi/64) * (D**4 - d**4)
+                Wx = Wy = Ix / (D/4)
                 fig = draw_hollow_circle(D, d)
 
             # Hiển thị thuộc tính tiết diện
             st.markdown("### " + _("Section Properties", "Thuộc tính tiết diện"))
             if A is not None:
-                st.markdown(f"- **A**: {A:.1f} mm²")
-                st.markdown(f"- **Ix**: {Ix:.2f} mm⁴")
-                st.markdown(f"- **Iy**: {Iy:.2f} mm⁴")
-                st.markdown(f"- **Wx**: {Wx:.2f} mm³")
-                st.markdown(f"- **Wy**: {Wy:.2f} mm³")
+                st.write(f"- A = {A:.2f} mm²")
+                st.write(f"- Ix = {Ix:.2f} mm⁴")
+                st.write(f"- Iy = {Iy:.2f} mm⁴")
+                st.write(f"- Wx = {Wx:.2f} mm³")
+                st.write(f"- Wy = {Wy:.2f} mm³")
 
         with col_fig:
             if fig is not None:
@@ -208,25 +208,39 @@ def run():
             df = df[["h", "b", "t", "A", "Ix", "Iy"]]
             df.columns = ["h (mm)", "b (mm)", "t (mm)", "A (cm²)", "Ix (cm⁴)", "Iy (cm⁴)"]
         
-        # CSS để làm cột đầu tiên rộng hơn và in đậm tiêu đề
+        # Định dạng bảng với pandas.Styler
+        styler = df.style.set_table_styles([
+            # In đậm tiêu đề cột
+            {'selector': 'th.col_heading', 'props': [('font-weight', 'bold'), ('text-align', 'center')]},
+            # In đậm tiêu đề hàng (index)
+            {'selector': 'th.row_heading', 'props': [('font-weight', 'bold'), ('min-width', '200px'), ('text-align', 'left')]},
+            # Đảm bảo cột đầu tiên rộng hơn
+            {'selector': 'td.col0', 'props': [('min-width', '200px'), ('text-align', 'left')]}
+        ])
+        
+        # CSS bổ sung để đảm bảo định dạng
         st.markdown(
             """
             <style>
             /* In đậm tiêu đề cột */
-            .stDataFrame th {
+            .stDataFrame thead th {
                 font-weight: bold !important;
+                text-align: center !important;
             }
-            /* In đậm tiêu đề hàng (index) */
+            /* In đậm và làm rộng cột đầu tiên (index) */
+            .stDataFrame tbody th {
+                font-weight: bold !important;
+                min-width: 200px !important;
+                text-align: left !important;
+            }
+            /* Đảm bảo độ rộng cột đầu tiên cho dữ liệu */
             .stDataFrame td:first-child {
-                font-weight: bold !important;
-            }
-            /* Tăng độ rộng cột đầu tiên (index) */
-            .stDataFrame td:first-child, .stDataFrame th:first-child {
-                min-width: 150px !important;
+                min-width: 200px !important;
+                text-align: left !important;
             }
             </style>
             """,
             unsafe_allow_html=True
         )
         
-        st.dataframe(df, use_container_width=True, height=300)
+        st.dataframe(styler, use_container_width=True, height=300)
