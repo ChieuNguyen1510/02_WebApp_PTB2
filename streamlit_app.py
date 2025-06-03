@@ -2,7 +2,7 @@ import streamlit as st
 
 # Load modules an toàn
 try:
-    from apps import app1, app2, app3, app4, app5, app6, app7, app8
+    from apps import app1, app2, app3, app4, app5, app6, app7, app8, app9
 except ImportError as e:
     st.error(f"Failed to load app modules: {str(e)}")
     st.stop()
@@ -24,6 +24,7 @@ LANG = {
             "Load Combination": "Load Combination",
             "Section Calculator": "Section Calculator",
             "Column PM Interaction": "Column PM Interaction"
+            "Anchor Bolt Capacity": "Anchor Bolt Capacity"
         }
     },
     "vi": {
@@ -39,6 +40,7 @@ LANG = {
             "Load Combination": "Tổ hợp tải trọng",
             "Section Calculator": "Tính tiết diện",
             "Column PM Interaction": "Kiểm tra cột"
+            "Anchor Bolt Capacity": "Kiểm tra bulong"
         }
     }
 }
@@ -62,6 +64,7 @@ apps = [
     {"key": "Load Combination", "icon": "📊", "func": getattr(app6, "run", None)},
     {"key": "Section Calculator", "icon": "📐", "func": getattr(app7, "run", None)},
     {"key": "Column PM Interaction", "icon": "📉", "func": getattr(app8, "run", None)},
+    {"key": "Anchor Bolt Capacity", "icon": "🔩", "func": getattr(app9, "run", None)},
 ]
 apps = [app for app in apps if app["func"] is not None]
 
