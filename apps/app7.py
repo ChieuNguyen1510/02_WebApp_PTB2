@@ -1,6 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 def run():
     lang = st.session_state.get("language", "en")
@@ -16,12 +17,20 @@ def run():
 
     # Bảng tra tiết diện tiêu chuẩn
     standard_sections = {
-        "IPE 80": {"type": "IPE", "h": 80, "b": 46, "tw": 3.8, "tf": 5.2, "A": 7.64, "Ix": 80.1, "Iy": 8.49},
-        "IPE 100": {"type": "IPE", "h": 100, "b": 55, "tw": 4.1, "tf": 5.7, "A": 10.3, "Ix": 171.0, "Iy": 15.9},
-        "IPE 120": {"type": "IPE", "h": 120, "b": 64, "tw": 4.4, "tf": 6.3, "A": 13.2, "Ix": 317.8, "Iy": 27.7},
-        "SHS 50x50x2": {"type": "SHS", "h": 50, "b": 50, "t": 2.0, "A": 3.81, "Ix": 17.0, "Iy": 17.0},
-        "SHS 100x100x3": {"type": "SHS", "h": 100, "b": 100, "t": 3.0, "A": 11.7, "Ix": 166.5, "Iy": 166.5},
-        "SHS 150x150x5": {"type": "SHS", "h": 150, "b": 150, "t": 5.0, "A": 28.3, "Ix": 614.9, "Iy": 614.9},
+        "IPE": {
+            "IPE 80": {"h": 80, "b": 46, "tw": 3.8, "tf": 5.2, "A": 7.64, "Ix": 80.1, "Iy": 8.49},
+            "IPE 100": {"h": 100, "b": 55, "tw": 4.1, "tf": 5.7, "A": 10.3, "Ix": 171.0, "Iy": 15.9},
+            "IPE 120": {"h": 120, "b": 64, "tw": 4.4, "tf": 6.3, "A": 13.2, "Ix": 317.8, "Iy": 27.7},
+            "IPE 200": {"h": 200, "b": 100, "tw": 5.6, "tf": 8.5, "A": 28.5, "Ix": 1943.0, "Iy": 142.4},
+            "IPE 240": {"h": 240, "b": 120, "tw": 6.2, "tf": 9.8, "A": 39.1, "Ix": 3892.0, "Iy": 290.2},
+        },
+        "SHS": {
+            "SHS 50x50x2": {"h": 50, "b": 50, "t": 2.0, "A": 3.81, "Ix": 17.0, "Iy": 17.0},
+            "SHS 100x100x3": {"h": 100, "b": 100, "t": 3.0, "A": 11.7, "Ix": 166.5, "Iy": 166.5},
+            "SHS 150x150x5": {"h": 150, "b": 150, "t": 5.0, "A": 28.3, "Ix": 614.9, "Iy": 614.9},
+            "SHS 200x200x6": {"h": 200, "b": 200, "t": 6.0, "A": 45.4, "Ix": 1618.0, "Iy": 1618.0},
+            "SHS 250x250x8": {"h": 250, "b": 250, "t": 8.0, "A": 75.4, "Ix": 3538.0, "Iy": 3538.0},
+        }
     }
 
     def draw_rectangle(b, h):
@@ -92,15 +101,33 @@ def run():
 
         if use_standard:
             # Option 2: Tra cứu tiết diện tiêu chuẩn
-            st.markdown("### " + _("Select Standard Section", "Chọn tiết diện tiêu chuẩn"))
+            st.markdown("### " + _("Select Standard Section Type", "Chọn loại tiết diện tiêu chuẩn"))
+            section_type = st.selectbox(
+                _("Section type:", "Loại tiết diện:"),
+                ["IPE", "SHS"]
+            )
+
+            # Hiển thị bảng tra
+            st.markdown("### " + _("Section Table", "Bảng tra tiết diện"))
+            section_data = standard_sections[section_type]
+            df = pd.DataFrame.from_dict(section_data, orient='index')
+            if section_type == "IPE":
+                df = df[["h", "b", "tw", "tf", "A", "Ix", "Iy"]]
+                df.columns = ["h (mm)", "b (mm)", "tw (mm)", "tf (mm)", "A (cm²)", "Ix (cm⁴)", "Iy (cm⁴)"]
+            elif section_type == "SHS":
+                df = df[["h", "b", "t", "A", "Ix", "Iy"]]
+                df.columns = ["h (mm)", "b (mm)", "t (mm)", "A (cm²)", "Ix (cm⁴)", "Iy (cm⁴)"]
+            st.dataframe(df, use_container_width=True)
+
+            # Chọn tiết diện cụ thể
+            st.markdown("### " + _("Select Section", "Chọn tiết diện"))
             section_name = st.selectbox(
                 _("Select section:", "Chọn tiết diện:"),
-                list(standard_sections.keys())
+                list(section_data.keys())
             )
 
             if section_name:
-                section = standard_sections[section_name]
-                section_type = section["type"]
+                section = section_data[section_name]
                 A = section["A"] * 100  # Chuyển từ cm² sang mm²
                 Ix = section["Ix"] * 10000  # Chuyển từ cm⁴ sang mm⁴
                 Iy = section["Iy"] * 10000  # Chuyển từ cm⁴ sang mm⁴
