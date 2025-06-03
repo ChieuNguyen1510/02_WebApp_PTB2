@@ -12,7 +12,7 @@ except ImportError as e:
 st.set_page_config(page_title="General Engineering Toolkit", layout="centered")
 
 
-# Ẩn thanh công cụ và nút "Manage app"aaaaâ
+# Ẩn thanh công cụ và nút "Manage app"aaaaaaaaaaaa
 st.markdown(
     """
     <style>
