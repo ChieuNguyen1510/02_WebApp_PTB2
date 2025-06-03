@@ -2,7 +2,7 @@ import streamlit as st
 
 # Load modules an toàn
 try:
-    from apps import app1, app2, app3, app4, app5
+    from apps import app1, app2, app3, app4, app5, app6
 except ImportError as e:
     st.error(f"Failed to load app modules: {str(e)}")
     st.stop()
@@ -32,7 +32,8 @@ LANG = {
             "Concrete Strength": "Cường độ Bê tông",
             "Steel Strength": "Cường độ Thép",
             "Reinforcement Area": "Diện tích Cốt thép",
-            "Loading": "Tải trọng"
+            "Loading": "Tải trọng",
+            "Load Combination": "Tổ hợp tải trọng" 
         }
     }
 }
@@ -53,6 +54,7 @@ apps = [
     {"key": "Steel Strength", "icon": "🔩", "func": getattr(app3, "run", None)},
     {"key": "Reinforcement Area", "icon": "🧮", "func": getattr(app4, "run", None)},
     {"key": "Loading", "icon": "📦", "func": getattr(app5, "run", None)},
+    {"key": "Load Combination", "icon": "📊", "func": getattr(app6, "run", None)},
 ]
 apps = [app for app in apps if app["func"] is not None]
 
