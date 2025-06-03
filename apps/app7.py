@@ -35,10 +35,10 @@ def run():
     }
 
     def draw_rectangle(b, h):
-        fig, ax = plt.subplots(figsize=(3, 3))
+        fig, ax = plt.subplots(figsize=(2, 2))  # Giảm kích thước hình
         ax.add_patch(plt.Rectangle((0, 0), b, h, fill=True, color='#4A90E2'))
-        ax.text(b/2, -h*0.05, f'b={b:.1f}mm', ha='center', va='top')
-        ax.text(-b*0.05, h/2, f'h={h:.1f}mm', ha='right', va='center', rotation=90)
+        ax.text(b/2, -h*0.05, f'b={b:.1f}mm', ha='center', va='top', fontsize=8)
+        ax.text(-b*0.05, h/2, f'h={h:.1f}mm', ha='right', va='center', rotation=90, fontsize=8)
         max_dim = max(b, h)
         ax.set_xlim(-max_dim*0.1, max_dim*1.1)
         ax.set_ylim(-max_dim*0.1, max_dim*1.1)
@@ -47,11 +47,11 @@ def run():
         return fig
 
     def draw_hollow_box(B, H, b, h):
-        fig, ax = plt.subplots(figsize=(3, 3))
+        fig, ax = plt.subplots(figsize=(2, 2))  # Giảm kích thước hình
         ax.add_patch(plt.Rectangle((0, 0), B, H, color='#4A90E2'))
         ax.add_patch(plt.Rectangle(((B - b) / 2, (H - h) / 2), b, h, color='white'))
-        ax.text(B/2, -H*0.05, f'B={B:.1f}mm', ha='center', va='top')
-        ax.text(-B*0.05, H/2, f'H={H:.1f}mm', ha='right', va='center', rotation=90)
+        ax.text(B/2, -H*0.05, f'B={B:.1f}mm', ha='center', va='top', fontsize=8)
+        ax.text(-B*0.05, H/2, f'H={H:.1f}mm', ha='right', va='center', rotation=90, fontsize=8)
         max_dim = max(B, H)
         ax.set_xlim(-max_dim*0.1, max_dim*1.1)
         ax.set_ylim(-max_dim*0.1, max_dim*1.1)
@@ -60,9 +60,9 @@ def run():
         return fig
 
     def draw_circle(d):
-        fig, ax = plt.subplots(figsize=(3, 3))
+        fig, ax = plt.subplots(figsize=(2, 2))  # Giảm kích thước hình
         ax.add_patch(plt.Circle((0, 0), d/2, color='#4A90E2'))
-        ax.text(0, -d*0.55, f'd={d:.1f}mm', ha='center', va='top')
+        ax.text(0, -d*0.55, f'd={d:.1f}mm', ha='center', va='top', fontsize=8)
         max_dim = d
         ax.set_xlim(-max_dim*0.6, max_dim*0.6)
         ax.set_ylim(-max_dim*0.6, max_dim*0.6)
@@ -71,10 +71,10 @@ def run():
         return fig
 
     def draw_hollow_circle(D, d):
-        fig, ax = plt.subplots(figsize=(3, 3))
+        fig, ax = plt.subplots(figsize=(2, 2))  # Giảm kích thước hình
         ax.add_patch(plt.Circle((0, 0), D/2, color='#4A90E2'))
         ax.add_patch(plt.Circle((0, 0), d/2, color='white'))
-        ax.text(0, -D*0.55, f'D={D:.1f}mm', ha='center', va='top')
+        ax.text(0, -D*0.55, f'D={D:.1f}mm', ha='center', va='top', fontsize=8)
         max_dim = D
         ax.set_xlim(-max_dim*0.6, max_dim*0.6)
         ax.set_ylim(-max_dim*0.6, max_dim*0.6)
@@ -83,12 +83,12 @@ def run():
         return fig
 
     def draw_h_section(h, b, tw, tf):
-        fig, ax = plt.subplots(figsize=(3, 3))
+        fig, ax = plt.subplots(figsize=(2, 2))  # Giảm kích thước hình
         ax.add_patch(plt.Rectangle((-b/2, h/2 - tf), b, tf, color='#4A90E2'))
         ax.add_patch(plt.Rectangle((-b/2, -h/2), b, tf, color='#4A90E2'))
         ax.add_patch(plt.Rectangle((-tw/2, -h/2 + tf), tw, h - 2*tf, color='#4A90E2'))
-        ax.text(0, h/2 + tf*0.5, f'h={h:.1f}mm', ha='center', va='bottom')
-        ax.text(b/2 + tw*0.5, 0, f'b={b:.1f}mm', ha='left', va='center')
+        ax.text(0, h/2 + tf*0.5, f'h={h:.1f}mm', ha='center', va='bottom', fontsize=8)
+        ax.text(b/2 + tw*0.5, 0, f'b={b:.1f}mm', ha='left', va='center', fontsize=8)
         max_dim = max(b, h)
         ax.set_xlim(-max_dim*0.6, max_dim*0.6)
         ax.set_ylim(-max_dim*0.6, max_dim*0.6)
@@ -173,6 +173,15 @@ def run():
             Wx = Wy = Ix / (D/4)
             fig = draw_hollow_circle(D, d)
 
+        # Hiển thị thuộc tính tiết diện
+        st.markdown("### " + _("Section Properties", "Thuộc tính tiết diện"))
+        if A is not None:
+            st.write(f"- A = {A:.2f} mm²")
+            st.write(f"- Ix = {Ix:.2f} mm⁴")
+            st.write(f"- Iy = {Iy:.2f} mm⁴")
+            st.write(f"- Wx = {Wx:.2f} mm³")
+            st.write(f"- Wy = {Wy:.2f} mm³")
+
     else:
         # Option 2: Tra cứu tiết diện tiêu chuẩn
         st.markdown("### " + _("Select Standard Section Type", "Chọn loại tiết diện tiêu chuẩn"))
@@ -191,47 +200,24 @@ def run():
         elif section_type == "SHS":
             df = df[["h", "b", "t", "A", "Ix", "Iy"]]
             df.columns = ["h (mm)", "b (mm)", "t (mm)", "A (cm²)", "Ix (cm⁴)", "Iy (cm⁴)"]
-        st.dataframe(df, use_container_width=True, height=300)  # Tăng chiều cao bảng
+        st.dataframe(df, use_container_width=True, height=300)
 
-        # Chọn tiết diện cụ thể
-        st.markdown("### " + _("Select Section", "Chọn tiết diện"))
+        # Chọn tiết diện để vẽ hình minh họa
+        st.markdown("### " + _("Select Section for Illustration", "Chọn tiết diện để minh họa"))
         section_name = st.selectbox(
             _("Select section:", "Chọn tiết diện:"),
             list(section_data.keys())
         )
 
+        # Tạo hình minh họa
         if section_name:
             section = section_data[section_name]
-            A = section["A"] * 100  # Chuyển từ cm² sang mm²
-            Ix = section["Ix"] * 10000  # Chuyển từ cm⁴ sang mm⁴
-            Iy = section["Iy"] * 10000  # Chuyển từ cm⁴ sang mm⁴
-
             if section_type == "IPE":
                 h, b, tw, tf = section["h"], section["b"], section["tw"], section["tf"]
-                Wx = Ix / (h/2)  # mm³
-                Wy = Iy / (b/2)  # mm³
                 fig = draw_h_section(h, b, tw, tf)
-                st.markdown("### " + _("Section Dimensions", "Thông số tiết diện"))
-                st.write(f"- h = {h:.1f} mm")
-                st.write(f"- b = {b:.1f} mm")
-                st.write(f"- tw = {tw:.1f} mm")
-                st.write(f"- tf = {tf:.1f} mm")
             elif section_type == "SHS":
-                h, b, t = section["h"], section["b"], section["t"]
-                Wx = Wy = Ix / (h/2)  # mm³
+                h, b = section["h"], section["b"]
                 fig = draw_rectangle(h, b)
-                st.markdown("### " + _("Section Dimensions", "Thông số tiết diện"))
-                st.write(f"- h = b = {h:.1f} mm")
-                st.write(f"- t = {t:.1f} mm")
-
-    # Hiển thị thuộc tính tiết diện
-    st.markdown("### " + _("Section Properties", "Thuộc tính tiết diện"))
-    if A is not None:
-        st.write(f"- A = {A:.2f} mm²")
-        st.write(f"- Ix = {Ix:.2f} mm⁴")
-        st.write(f"- Iy = {Iy:.2f} mm⁴")
-        st.write(f"- Wx = {Wx:.2f} mm³")
-        st.write(f"- Wy = {Wy:.2f} mm³")
 
     # Hiển thị hình minh họa ở dưới cùng
     if fig is not None:
