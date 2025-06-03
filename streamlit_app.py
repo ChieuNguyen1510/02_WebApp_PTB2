@@ -64,7 +64,7 @@ apps = [
     {"key": "Load Combination", "icon": "📊", "func": getattr(app6, "run", None)},
     {"key": "Section Calculator", "icon": "📐", "func": getattr(app7, "run", None)},
     {"key": "Column PM Interaction", "icon": "📉", "func": getattr(app8, "run", None)},
-    {"key": "Anchor Bolt Capacity", "icon": "🔩", "func": getattr(app9, "run", None)},
+    {"key": "Anchor Bolt Capacity", "icon": "🔩", "func": getattr(app9, "run", None)}
 ]
 apps = [app for app in apps if app["func"] is not None]
 
