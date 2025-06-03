@@ -215,7 +215,7 @@ def run():
             # In đậm tiêu đề hàng (index)
             {'selector': 'th.row_heading', 'props': [('font-weight', 'bold'), ('min-width', '200px'), ('text-align', 'left')]},
             # Đảm bảo cột đầu tiên rộng hơn
-            {'selector': 'td.col0', 'props': [('min-width', '200px'), ('text-align', 'left')]}
+            {'selector': 'td.col0', 'props': [('min-width', '500px'), ('text-align', 'left')]}
         ])
         
         # CSS bổ sung để đảm bảo định dạng
@@ -230,7 +230,7 @@ def run():
             /* In đậm và làm rộng cột đầu tiên (index) */
             .stDataFrame tbody th {
                 font-weight: bold !important;
-                min-width: 200px !important;
+                min-width: 500px !important;
                 text-align: left !important;
             }
             /* Đảm bảo độ rộng cột đầu tiên cho dữ liệu */
