@@ -14,7 +14,7 @@ def run():
         "Q": st.checkbox("👣 Live Load (Q)", value=True),
         "W": st.checkbox("🌬️ Wind Load (W)"),
         "S": st.checkbox("❄️ Snow Load (S)"),
-        "A": st.checkbox("💥 Accidental Load (A)")
+        "A": st.checkbox("💥 Accidental Load (A)")  # chưa dùng trong tổ hợp cơ bản
     }
 
     active_loads = [k for k, v in load_inputs.items() if v]
@@ -34,20 +34,20 @@ def run():
     if st.button("⚡ Generate Load Combinations"):
         combinations = []
 
-        # Define standard load factors (Eurocode)
+        # Define Eurocode load factors
         γ = {"G": 1.35, "Q": 1.5, "W": 1.5, "S": 1.5}
         ψ0 = {"Q": 0.7, "W": 0.6, "S": 0.5}
         ψ1 = {"Q": 0.5, "W": 0.2, "S": 0.2}
         ψ2 = {"Q": 0.3, "W": 0.0, "S": 0.2}
 
-        # ULS combination
+        # ULS
         if "ULS (STR/GEO)" in comb_types:
             for load in active_loads:
                 if load != "G":
                     expr = f"{γ['G']}*G + {γ[load]}*{load}"
                     combinations.append(("ULS", expr))
 
-        # SLS combinations
+        # SLS
         for label, psi in [
             ("SLS – Characteristic", {"G": 1.0, "Q": 1.0, "W": 1.0, "S": 1.0}),
             ("SLS – Frequent", {"G": 1.0, "Q": ψ1["Q"], "W": ψ1["W"], "S": ψ1["S"]}),
@@ -57,21 +57,31 @@ def run():
                 expr = " + ".join(f"{psi[l]}*{l}" for l in active_loads if l in psi)
                 combinations.append((label, expr))
 
-        # Show table
+        # Save result to session
         df = pd.DataFrame(combinations, columns=["Combination", "Expression"])
+        st.session_state["combination_df"] = df
+
+    # Step 4 – Display result
+    if "combination_df" in st.session_state:
+        df = st.session_state["combination_df"]
         st.markdown("### ✅ Load Combinations")
         st.dataframe(df, use_container_width=True)
 
-        # Download Excel
         def to_excel(df):
             output = BytesIO()
             with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
                 df.to_excel(writer, index=False, sheet_name="LoadCombinations")
             return output.getvalue()
 
-        st.download_button(
-            label="📥 Download as Excel",
-            data=to_excel(df),
-            file_name="load_combinations.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
+        col1, col2 = st.columns([4, 1])
+        with col1:
+            st.download_button(
+                label="📥 Download as Excel",
+                data=to_excel(df),
+                file_name="load_combinations.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
+        with col2:
+            if st.button("❌ Clear"):
+                del st.session_state["combination_df"]
+                st.experimental_rerun()
