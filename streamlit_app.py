@@ -1,12 +1,6 @@
 import streamlit as st
 
-# Thêm đoạn này vào đầu file Streamlit của bạn
-st.markdown("""
-    <style>
-    footer {visibility: hidden;}
-    .viewerBadge_container__1QSob {display: none;}
-    </style>
-""", unsafe_allow_html=True)
+
 
 # Load modules an toàn
 try:
@@ -17,6 +11,14 @@ except ImportError as e:
 
 st.set_page_config(page_title="General Engineering Toolkit", layout="centered")
 
+
+# Thêm đoạn này vào đầu file Streamlit của bạn
+st.markdown("""
+    <style>
+    footer {visibility: hidden;}
+    .viewerBadge_container__1QSob {display: none;}
+    </style>
+""", unsafe_allow_html=True)
 # ---------- Ngôn ngữ ----------
 LANG = {
     "en": {
