@@ -7,14 +7,13 @@ def run():
 
     st.markdown("Generate ULS and SLS load combinations automatically based on Eurocode.")
 
-    # Step 1 – Load types
+    # Step 1 – Load types (No Accidental A)
     st.markdown("### 1. Select load types")
     load_inputs = {
         "G": st.checkbox("🧱 Dead Load (G)", value=True),
         "Q": st.checkbox("👣 Live Load (Q)", value=True),
         "W": st.checkbox("🌬️ Wind Load (W)"),
-        "S": st.checkbox("❄️ Snow Load (S)"),
-        "A": st.checkbox("💥 Accidental Load (A)")  # chưa dùng trong tổ hợp cơ bản
+        "S": st.checkbox("❄️ Snow Load (S)")
     }
 
     active_loads = [k for k, v in load_inputs.items() if v]
@@ -36,14 +35,13 @@ def run():
 
         # Define Eurocode load factors
         γ = {"G": 1.35, "Q": 1.5, "W": 1.5, "S": 1.5}
-        ψ0 = {"Q": 0.7, "W": 0.6, "S": 0.5}
         ψ1 = {"Q": 0.5, "W": 0.2, "S": 0.2}
         ψ2 = {"Q": 0.3, "W": 0.0, "S": 0.2}
 
         # ULS
         if "ULS (STR/GEO)" in comb_types:
             for load in active_loads:
-                if load != "G":
+                if load != "G" and load in γ:
                     expr = f"{γ['G']}*G + {γ[load]}*{load}"
                     combinations.append(("ULS", expr))
 
