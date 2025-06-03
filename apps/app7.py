@@ -8,8 +8,21 @@ def run():
 
     st.subheader(_("📐 Structural Section Calculator", "📐 Tính toán tiết diện"))
 
-    # Tạo hai cột: trái cho nhập liệu, phải cho hình vẽ
+    # Tạo hai cột: trái cho nhập liệu/tra cứu, phải cho hình vẽ
     col_input, col_fig = st.columns([2, 1])
+
+    # Checkbox để chuyển đổi giữa nhập thủ công và tra cứu tiêu chuẩn
+    use_standard = st.checkbox(_("Use standard sections", "Sử dụng tiết diện tiêu chuẩn"))
+
+    # Bảng tra tiết diện tiêu chuẩn
+    standard_sections = {
+        "IPE 80": {"type": "IPE", "h": 80, "b": 46, "tw": 3.8, "tf": 5.2, "A": 7.64, "Ix": 80.1, "Iy": 8.49},
+        "IPE 100": {"type": "IPE", "h": 100, "b": 55, "tw": 4.1, "tf": 5.7, "A": 10.3, "Ix": 171.0, "Iy": 15.9},
+        "IPE 120": {"type": "IPE", "h": 120, "b": 64, "tw": 4.4, "tf": 6.3, "A": 13.2, "Ix": 317.8, "Iy": 27.7},
+        "SHS 50x50x2": {"type": "SHS", "h": 50, "b": 50, "t": 2.0, "A": 3.81, "Ix": 17.0, "Iy": 17.0},
+        "SHS 100x100x3": {"type": "SHS", "h": 100, "b": 100, "t": 3.0, "A": 11.7, "Ix": 166.5, "Iy": 166.5},
+        "SHS 150x150x5": {"type": "SHS", "h": 150, "b": 150, "t": 5.0, "A": 28.3, "Ix": 614.9, "Iy": 614.9},
+    }
 
     def draw_rectangle(b, h):
         fig, ax = plt.subplots(figsize=(3, 3))
@@ -74,81 +87,117 @@ def run():
         return fig
 
     with col_input:
-        st.markdown("### " + _("Input Parameters", "Thông số đầu vào"))
-        section_type = st.selectbox(
-            _("Select section type:", "Chọn loại tiết diện:"),
-            ["⬜ Rectangle", "🔲 Hollow Box", "⬛ H-Section", "⬤ Circle", "⭕ Hollow Circle"]
-        )
-
         A = Ix = Iy = Wx = Wy = None
         fig = None
 
-        if section_type == "⬜ Rectangle":
-            b = st.number_input(_("Width b (mm)", "Rộng b (mm)"), min_value=0.1, value=200.0)
-            h = st.number_input(_("Height h (mm)", "Cao h (mm)"), min_value=0.1, value=300.0)
-            A = b * h
-            Ix = b * h**3 / 12
-            Iy = h * b**3 / 12
-            Wx = Ix / (h/2)
-            Wy = Iy / (b/2)
-            fig = draw_rectangle(b, h)
+        if use_standard:
+            # Option 2: Tra cứu tiết diện tiêu chuẩn
+            st.markdown("### " + _("Select Standard Section", "Chọn tiết diện tiêu chuẩn"))
+            section_name = st.selectbox(
+                _("Select section:", "Chọn tiết diện:"),
+                list(standard_sections.keys())
+            )
 
-        elif section_type == "🔲 Hollow Box":
-            B = st.number_input(_("Outer width B (mm)", "Rộng ngoài B (mm)"), min_value=0.1, value=300.0)
-            H = st.number_input(_("Outer height H (mm)", "Cao ngoài H (mm)"), min_value=0.1, value=400.0)
-            t = st.number_input(_("Wall thickness t (mm)", "Chiều dày thành t (mm)"), min_value=0.1, value=20.0)
-            if B <= 2*t or H <= 2*t:
-                st.error(_("Outer dimensions must be greater than twice the wall thickness!", 
-                           "Kích thước ngoài phải lớn hơn 2 lần chiều dày thành!"))
-                return
-            b = B - 2*t
-            h = H - 2*t
-            A = B*H - b*h
-            Ix = (B * H**3 - b * h**3) / 12
-            Iy = (H * B**3 - h * b**3) / 12
-            Wx = Ix / (H/2)
-            Wy = Iy / (B/2)
-            fig = draw_hollow_box(B, H, b, h)
+            if section_name:
+                section = standard_sections[section_name]
+                section_type = section["type"]
+                A = section["A"] * 100  # Chuyển từ cm² sang mm²
+                Ix = section["Ix"] * 10000  # Chuyển từ cm⁴ sang mm⁴
+                Iy = section["Iy"] * 10000  # Chuyển từ cm⁴ sang mm⁴
 
-        elif section_type == "⬛ H-Section":
-            h = st.number_input(_("Total height h (mm)", "Chiều cao tổng h (mm)"), min_value=0.1, value=300.0)
-            b = st.number_input(_("Flange width b (mm)", "Chiều rộng cánh b (mm)"), min_value=0.1, value=150.0)
-            tf = st.number_input(_("Flange thickness tf (mm)", "Bề dày cánh tf (mm)"), min_value=0.1, value=20.0)
-            tw = st.number_input(_("Web thickness tw (mm)", "Bề dày bụng tw (mm)"), min_value=0.1, value=10.0)
-            if h <= 2*tf:
-                st.error(_("Total height must be greater than twice the flange thickness!", 
-                           "Chiều cao tổng phải lớn hơn 2 lần bề dày cánh!"))
-                return
-            if b <= tw:
-                st.error(_("Flange width must be greater than web thickness!", 
-                           "Chiều rộng cánh phải lớn hơn bề dày bụng!"))
-                return
-            A = 2 * b * tf + (h - 2*tf) * tw
-            Ix = (b * h**3 - (b - tw) * (h - 2*tf)**3) / 12
-            Iy = 2 * (tf * b**3 / 12 + tf * b * (h/2 - tf/2)**2)
-            Wx = Ix / (h/2)
-            Wy = Iy / (b/2)
-            fig = draw_h_section(h, b, tw, tf)
+                if section_type == "IPE":
+                    h, b, tw, tf = section["h"], section["b"], section["tw"], section["tf"]
+                    Wx = Ix / (h/2)  # mm³
+                    Wy = Iy / (b/2)  # mm³
+                    fig = draw_h_section(h, b, tw, tf)
+                    st.markdown("### " + _("Section Dimensions", "Thông số tiết diện"))
+                    st.write(f"- h = {h:.1f} mm")
+                    st.write(f"- b = {b:.1f} mm")
+                    st.write(f"- tw = {tw:.1f} mm")
+                    st.write(f"- tf = {tf:.1f} mm")
+                elif section_type == "SHS":
+                    h, b, t = section["h"], section["b"], section["t"]
+                    Wx = Wy = Ix / (h/2)  # mm³
+                    fig = draw_rectangle(h, b)
+                    st.markdown("### " + _("Section Dimensions", "Thông số tiết diện"))
+                    st.write(f"- h = b = {h:.1f} mm")
+                    st.write(f"- t = {t:.1f} mm")
 
-        elif section_type == "⬤ Circle":
-            d = st.number_input(_("Diameter d (mm)", "Đường kính d (mm)"), min_value=0.1, value=100.0)
-            A = np.pi * (d**2) / 4
-            Ix = Iy = (np.pi * d**4) / 64
-            Wx = Wy = Ix / (d/4)
-            fig = draw_circle(d)
+        else:
+            # Option 1: Nhập thủ công
+            st.markdown("### " + _("Input Parameters", "Thông số đầu vào"))
+            section_type = st.selectbox(
+                _("Select section type:", "Chọn loại tiết diện:"),
+                ["⬜ Rectangle", "🔲 Hollow Box", "⬛ H-Section", "⬤ Circle", "⭕ Hollow Circle"]
+            )
 
-        elif section_type == "⭕ Hollow Circle":
-            D = st.number_input(_("Outer diameter D (mm)", "Đường kính ngoài D (mm)"), min_value=0.1, value=120.0)
-            d = st.number_input(_("Inner diameter d (mm)", "Đường kính trong d (mm)"), min_value=0.0, value=80.0)
-            if D <= d:
-                st.error(_("Outer diameter must be greater than inner diameter!", 
-                           "Đường kính ngoài phải lớn hơn đường kính trong!"))
-                return
-            A = (np.pi/4) * (D**2 - d**2)
-            Ix = Iy = (np.pi/64) * (D**4 - d**4)
-            Wx = Wy = Ix / (D/4)
-            fig = draw_hollow_circle(D, d)
+            if section_type == "⬜ Rectangle":
+                b = st.number_input(_("Width b (mm)", "Rộng b (mm)"), min_value=0.1, value=200.0)
+                h = st.number_input(_("Height h (mm)", "Cao h (mm)"), min_value=0.1, value=300.0)
+                A = b * h
+                Ix = b * h**3 / 12
+                Iy = h * b**3 / 12
+                Wx = Ix / (h/2)
+                Wy = Iy / (b/2)
+                fig = draw_rectangle(b, h)
 
+            elif section_type == "🔲 Hollow Box":
+                B = st.number_input(_("Outer width B (mm)", "Rộng ngoài B (mm)"), min_value=0.1, value=300.0)
+                H = st.number_input(_("Outer height H (mm)", "Cao ngoài H (mm)"), min_value=0.1, value=400.0)
+                t = st.number_input(_("Wall thickness t (mm)", "Chiều dày thành t (mm)"), min_value=0.1, value=20.0)
+                if B <= 2*t or H <= 2*t:
+                    st.error(_("Outer dimensions must be greater than twice the wall thickness!", 
+                               "Kích thước ngoài phải lớn hơn 2 lần chiều dày thành!"))
+                    return
+                b = B - 2*t
+                h = H - 2*t
+                A = B*H - b*h
+                Ix = (B * H**3 - b * h**3) / 12
+                Iy = (H * B**3 - h * b**3) / 12
+                Wx = Ix / (H/2)
+                Wy = Iy / (B/2)
+                fig = draw_hollow_box(B, H, b, h)
+
+            elif section_type == "⬛ H-Section":
+                h = st.number_input(_("Total height h (mm)", "Chiều cao tổng h (mm)"), min_value=0.1, value=300.0)
+                b = st.number_input(_("Flange width b (mm)", "Chiều rộng cánh b (mm)"), min_value=0.1, value=150.0)
+                tf = st.number_input(_("Flange thickness tf (mm)", "Bề dày cánh tf (mm)"), min_value=0.1, value=20.0)
+                tw = st.number_input(_("Web thickness tw (mm)", "Bề dày bụng tw (mm)"), min_value=0.1, value=10.0)
+                if h <= 2*tf:
+                    st.error(_("Total height must be greater than twice the flange thickness!", 
+                               "Chiều cao tổng phải lớn hơn 2 lần bề dày cánh!"))
+                    return
+                if b <= tw:
+                    st.error(_("Flange width must be greater than web thickness!", 
+                               "Chiều rộng cánh phải lớn hơn bề dày bụng!"))
+                    return
+                A = 2 * b * tf + (h - 2*tf) * tw
+                Ix = (b * h**3 - (b - tw) * (h - 2*tf)**3) / 12
+                Iy = 2 * (tf * b**3 / 12 + tf * b * (h/2 - tf/2)**2)
+                Wx = Ix / (h/2)
+                Wy = Iy / (b/2)
+                fig = draw_h_section(h, b, tw, tf)
+
+            elif section_type == "⬤ Circle":
+                d = st.number_input(_("Diameter d (mm)", "Đường kính d (mm)"), min_value=0.1, value=100.0)
+                A = np.pi * (d**2) / 4
+                Ix = Iy = (np.pi * d**4) / 64
+                Wx = Wy = Ix / (d/4)
+                fig = draw_circle(d)
+
+            elif section_type == "⭕ Hollow Circle":
+                D = st.number_input(_("Outer diameter D (mm)", "Đường kính ngoài D (mm)"), min_value=0.1, value=120.0)
+                d = st.number_input(_("Inner diameter d (mm)", "Đường kính trong d (mm)"), min_value=0.0, value=80.0)
+                if D <= d:
+                    st.error(_("Outer diameter must be greater than inner diameter!", 
+                               "Đường kính ngoài phải lớn hơn đường kính trong!"))
+                    return
+                A = (np.pi/4) * (D**2 - d**2)
+                Ix = Iy = (np.pi/64) * (D**4 - d**4)
+                Wx = Wy = Ix / (D/4)
+                fig = draw_hollow_circle(D, d)
+
+        # Hiển thị thuộc tính tiết diện
         st.markdown("### " + _("Section Properties", "Thuộc tính tiết diện"))
         if A is not None:
             st.write(f"- A = {A:.2f} mm²")
