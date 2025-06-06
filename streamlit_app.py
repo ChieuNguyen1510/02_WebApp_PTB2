@@ -31,7 +31,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-# ---------- Ngôn ngữ ----------
+# ---------- Ngôn ngữ -----------
 LANG = {
     "en": {
         "title": "📱 General Engineering Toolkit",
