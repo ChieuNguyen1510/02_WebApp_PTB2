@@ -46,7 +46,7 @@ LANG = {
             "Load Combination": "Load Combination",
             "Section Calculator": "Section Calculator",
             "Column PM Interaction": "Column PM Interaction",
-            "Anchor Bolt Capacity": "Anchor Bolt Capacity"
+            "Anchor Bolt Capacity": "Anchor Bolt Capacity",
             "Base Plate Checker": "Base Plate Checker"
         }
     },
