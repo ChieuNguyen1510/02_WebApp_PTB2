@@ -2,7 +2,7 @@ import streamlit as st
 
 # Load modules an toàn
 try:
-    from apps import app1, app2, app3, app4, app5, app6, app7, app8, app9, app10
+    from apps import app1, app2, app3, app4, app5, app6, app7, app8, app9, app10, app11
 except ImportError as e:
     st.error(f"Failed to load app modules: {str(e)}")
     st.stop()
@@ -74,7 +74,8 @@ LANG = {
             "Section Calculator": "Section Calculator",
             "Column PM Interaction": "Column PM Interaction",
             "Anchor Bolt Capacity": "Anchor Bolt Capacity",
-            "Base Plate Checker": "Base Plate Checker"
+            "Base Plate Checker": "Base Plate Checker",
+            "Shear Stud Design Calculation": "Shear Stud Design Calculation"
         }
     },
     "vi": {
@@ -97,7 +98,8 @@ LANG = {
             "Section Calculator": "Tính tiết diện",
             "Column PM Interaction": "Kiểm tra cột",
             "Anchor Bolt Capacity": "Kiểm tra bulong",
-            "Base Plate Checker": "Kiểm tra bản đế"
+            "Base Plate Checker": "Kiểm tra bản đế",
+            "Shear Stud Design Calculation": "Kiểm tra cắt bulong"
         }
     }
 }
@@ -131,6 +133,7 @@ GROUPED_APPS = {
     "steel": [
         {"key": "Anchor Bolt Capacity", "icon": "🔧", "func": getattr(app9, "run", None)},
         {"key": "Base Plate Checker", "icon": "🪛", "func": getattr(app10, "run", None)},
+        {"key": "Shear Stud Design Calculation", "icon": "🪛", "func": getattr(app11, "run", None)},
     ]
 }
 
