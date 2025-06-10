@@ -32,7 +32,7 @@ def run():
 
         st.info("ℹ️ Note: Yield strength *decreases with increasing thickness*. S355 may be lower than 355 MPa for thick plates.")
 
-    # ========== TAB 2: THÉP TRÒN ==========
+    # ========== TAB 2: THÉP TRÒN ===========
     with tab2:
         st.subheader("🟥 Reinforcement Bars (Rebars)")
 
