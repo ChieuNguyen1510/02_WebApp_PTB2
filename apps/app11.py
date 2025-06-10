@@ -59,6 +59,13 @@ def run():
         buffer = BytesIO()
         with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
             df.to_excel(writer, index=False, sheet_name="Shear Stud")
-            writer.save()
+            # No need for writer.save(); the 'with' block handles it
+        st.download_button(
+            "⬇️ Download Excel",
+            buffer.getvalue(),
+            file_name="shear_stud_design.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
 
-        st.download_button("⬇️ Download Excel", buffer.getvalue(), file_name="shear_stud_design.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+if __name__ == "__main__":
+    run()
