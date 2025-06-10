@@ -14,6 +14,7 @@ def run():
             {"Grade": "S235", "fy": 235, "fu": 360, "Es": 200000, "Standard": "EN 10025"},
             {"Grade": "S275", "fy": 275, "fu": 410, "Es": 200000, "Standard": "EN 10025"},
             {"Grade": "S355", "fy": 355, "fu": 510, "Es": 200000, "Standard": "EN 10025"},
+            {"Grade": "S460", "fy": 440, "fu": 540, "Es": 200000, "Standard": "EN 10025-3"},
             {"Grade": "A36",  "fy": 250, "fu": 400, "Es": 200000, "Standard": "ASTM A36"},
             {"Grade": "Q235", "fy": 235, "fu": 375, "Es": 200000, "Standard": "GB/T 700"},
             {"Grade": "Q345", "fy": 345, "fu": 470, "Es": 200000, "Standard": "GB/T 1591"},
@@ -28,6 +29,8 @@ def run():
         st.write(f"**Yield strength f<sub>y</sub>** (MPa): `{selected.fy}`", unsafe_allow_html=True)
         st.write(f"**Ultimate strength f<sub>u</sub>** (MPa): `{selected.fu}`", unsafe_allow_html=True)
         st.write(f"**Modulus of elasticity E<sub>s</sub>** (MPa): `{selected.Es}`", unsafe_allow_html=True)
+
+        st.info("ℹ️ Note: Yield strength *decreases with increasing thickness*. S355 may be lower than 355 MPa for thick plates.")
 
     # ========== TAB 2: THÉP TRÒN ==========
     with tab2:
