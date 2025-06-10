@@ -75,7 +75,7 @@ LANG = {
             "Column PM Interaction": "Column PM Interaction",
             "Anchor Bolt Capacity": "Anchor Bolt Capacity",
             "Base Plate Checker": "Base Plate Checker",
-            "Shear Stud Design Calculation": "Shear Stud Design Calculation"
+            "Shear Stud Design": "Shear Stud Design"
         }
     },
     "vi": {
@@ -99,7 +99,7 @@ LANG = {
             "Column PM Interaction": "Kiểm tra cột",
             "Anchor Bolt Capacity": "Kiểm tra bulong",
             "Base Plate Checker": "Kiểm tra bản đế",
-            "Shear Stud Design Calculation": "Kiểm tra cắt bulong"
+            "Shear Stud Design": "Kiểm tra cắt bulong"
         }
     }
 }
@@ -133,7 +133,7 @@ GROUPED_APPS = {
     "steel": [
         {"key": "Anchor Bolt Capacity", "icon": "🔧", "func": getattr(app9, "run", None)},
         {"key": "Base Plate Checker", "icon": "🪛", "func": getattr(app10, "run", None)},
-        {"key": "Shear Stud Design Calculation", "icon": "🪛", "func": getattr(app11, "run", None)},
+        {"key": "Shear Stud Design", "icon": "🪛", "func": getattr(app11, "run", None)},
     ]
 }
 
