@@ -33,7 +33,8 @@ def run():
     st.metric("Stud cross-section area Aₛ", f"{As:.2f} mm²")
     st.metric("Shear resistance V₁ (governed by steel)", f"{V1/1000:.2f} kN")
     st.metric("Shear resistance V₂ (governed by concrete)", f"{V2/1000:.2f} kN")
-    st.success(f"✅ Design shear resistance V<sub>Rd</sub>: **{Vrd/1000:.2f} kN**", unsafe_allow_html=True)
+    st.markdown(f"### ✅ Design shear resistance V<sub>Rd</sub>: **{Vrd/1000:.2f} kN**", unsafe_allow_html=True)
+
 
     st.markdown("---")
     st.header("📘 Formulas Used")
