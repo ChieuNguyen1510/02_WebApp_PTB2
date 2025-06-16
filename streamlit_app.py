@@ -2,8 +2,7 @@ import streamlit as st
 
 # Load modules an toàn
 try:
-    from apps import app1_Convert_Unit, app2_Concrete_Strength_Table, app3_Steel_Strength_Lookup, app4_Steel_Reinforcement_Area, app5_Load_Reference, app6_Load_Combination_Generator, \
-    app7_Structural_Section_Calculator, app8_Column_PMM_Interaction, app9_Anchor_Bolt_Capacity, app10_Base_Plate_Checker, app11_Shear_Stud_Design
+    from apps import *
 except ImportError as e:
     st.error(f"Failed to load app modules: {str(e)}")
     st.stop()
