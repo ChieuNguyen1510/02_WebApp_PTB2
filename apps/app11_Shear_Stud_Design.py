@@ -20,13 +20,13 @@ def run():
     st.markdown(f"""
     - Cross-sectional area of stud:  
       $$
-      A_s = \\frac{{\\pi \\cdot d^2}}{{4}} = \\frac{{3.1416 \\cdot {d}^2}}{{4}} = {As:.1f}\\ \\text{{mm}}^2
+      A_s = \\frac{{\\pi \\times d^2}}{{4}} = \\frac{{3.1416 \\times {d}^2}}{{4}} = {As:.1f}\\ \\text{{mm}}^2
       $$
 
     - Design shear resistance:  
       $$
-      V_{{Rd}} = \\frac{{0.8 \\cdot d \\cdot f_u \\cdot A_s}}{{\\gamma_V}} = 
-      \\frac{{0.8 \\cdot {d} \\cdot {fu} \\cdot {As:.1f}}}{{{gammaV}}} = {Vrd:.1f}\\ \\text{{N}} = {Vrd/1000:.2f}\\ \\text{{kN}}
+      V_{{Rd}} = \\frac{{0.8 \\times d \\times f_u \\times A_s}}{{\\gamma_V}} = 
+      \\frac{{0.8 \\times {d} \\times {fu} \\times {As:.1f}}}{{{gammaV}}} = {Vrd:.1f}\\ \\text{{N}} = {Vrd/1000:.2f}\\ \\text{{kN}}
       $$
     """, unsafe_allow_html=True)
 
