@@ -7,7 +7,7 @@ def run():
     lang = st.session_state.get("language", "en")
     def _(en, vi): return vi if lang == "vi" else en
 
-    st.subheader(_("📉 Column PM Interaction Checker", "📉 Kiểm tra tương tác N-M cột"))
+    st.subheader(_("📉 Column PMM Interaction Checker", "📉 Kiểm tra tương tác N-M cột"))
 
     st.markdown("### " + _("Input Parameters", "Thông số đầu vào"))
 

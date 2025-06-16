@@ -2,7 +2,8 @@ import streamlit as st
 
 # Load modules an toàn
 try:
-    from apps import app1, app2, app3, app4, app5, app6, app7, app8, app9, app10, app11
+    from apps import app1_Convert_Unit, app2_Concrete_Strength_Table, app3_Steel_Strength_Lookup, app4_Steel_Reinforcement_Area, app5_Load_Reference, app6_Load_Combination_Generator,
+    app7_Structural_Section_Calculator, app8_Column_PMM_Interaction, app9_Anchor_Bolt_Capacity, app10_Base_Plate_Checker, app11_Shear_Stud_Design
 except ImportError as e:
     st.error(f"Failed to load app modules: {str(e)}")
     st.stop()
@@ -117,23 +118,23 @@ def _(key): return current_lang["apps"].get(key, key)
 # ----------------- Danh sách nhóm app -----------------
 GROUPED_APPS = {
     "lookup": [
-        {"key": "Convert Unit", "icon": "🔁", "func": getattr(app1, "run", None)},
-        {"key": "Concrete Strength", "icon": "🏗️", "func": getattr(app2, "run", None)},
-        {"key": "Steel Strength", "icon": "🔩", "func": getattr(app3, "run", None)},
-        {"key": "Reinforcement Area", "icon": "🧮", "func": getattr(app4, "run", None)},
+        {"key": "Convert Unit", "icon": "🔁", "func": getattr(app1_Convert_Unit, "run", None)},
+        {"key": "Concrete Strength", "icon": "🏗️", "func": getattr(app2_Concrete_Strength_Table, "run", None)},
+        {"key": "Steel Strength", "icon": "🔩", "func": getattr(app3_Steel_Strength_Lookup, "run", None)},
+        {"key": "Reinforcement Area", "icon": "🧮", "func": getattr(app4_Steel_Reinforcement_Area, "run", None)},
     ],
     "loads": [
-        {"key": "Loading", "icon": "📦", "func": getattr(app5, "run", None)},
-        {"key": "Load Combination", "icon": "📊", "func": getattr(app6, "run", None)},
+        {"key": "Loading", "icon": "📦", "func": getattr(app5_Load_Reference, "run", None)},
+        {"key": "Load Combination", "icon": "📊", "func": getattr(app6_Load_Combination_Generator, "run", None)},
     ],
     "concrete": [
-        {"key": "Section Calculator", "icon": "📐", "func": getattr(app7, "run", None)},
-        {"key": "Column PM Interaction", "icon": "📉", "func": getattr(app8, "run", None)},
+        {"key": "Section Calculator", "icon": "📐", "func": getattr(app7_Structural_Section_Calculator, "run", None)},
+        {"key": "Column PM Interaction", "icon": "📉", "func": getattr(app8_Column_PMM_Interaction, "run", None)},
     ],
     "steel": [
-        {"key": "Anchor Bolt Capacity", "icon": "🔧", "func": getattr(app9, "run", None)},
-        {"key": "Base Plate Checker", "icon": "🪛", "func": getattr(app10, "run", None)},
-        {"key": "Shear Stud Design", "icon": "🪛", "func": getattr(app11, "run", None)},
+        {"key": "Anchor Bolt Capacity", "icon": "🔧", "func": getattr(app9_Anchor_Bolt_Capacity, "run", None)},
+        {"key": "Base Plate Checker", "icon": "🪛", "func": getattr(app10_Base_Plate_Checker, "run", None)},
+        {"key": "Shear Stud Design", "icon": "🪛", "func": getattr(app11_Shear_Stud_Design, "run", None)},
     ]
 }
 
