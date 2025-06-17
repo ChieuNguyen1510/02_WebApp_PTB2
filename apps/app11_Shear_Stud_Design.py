@@ -32,17 +32,14 @@ def run():
 
     st.success(f"✅ V₍Rd₎ = **{Prd / 1000:.2f} kN**")
 
-	# Thêm chú thích
-	st.markdown("""
-	**Where:**
-	- \( A_s \): Cross-sectional area of the stud, calculated as $$ A_s = \frac{\pi \times d^2}{4} $$, in mm²;
-	- \( d \): Diameter of the shank of the stud, 16 mm ≤ \( d \) ≤ 25 mm, in mm;
-	- \( f_u \): Specified ultimate tensile strength of the stud material, not greater than 500 MPa, in MPa;
-	- \( \gamma_V \): Partial factor for shear studs, recommended value is 1.25;
-	- \( V_{Rd} \): Design shear resistance of a single stud, calculated as $$ V_{Rd} = \frac{0.8 \times f_u \times A_s}{\gamma_V} $$, in N.
-
-	**Note:** The value for \( \gamma_V \) may be specified in the National Annex. The recommended value per EN1994-1-1 is 1.25.
-	""")
+    # Thêm chú thích
+    st.markdown("""
+    **Where:**
+    - γv is the partial factor;
+    - d is the diameter of the shank of the stud, 16 mm ≤ d ≤ 25 mm;
+    - fu is the specified ultimate tensile strength of the material of the stud but not greater than 500 N/mm²;
+    **Note:** The value for γv may be given in the National Annex. The recommended value for γ_V is 1.25.
+    """)
 
     # Export to Excel
     st.markdown("---")
@@ -58,6 +55,3 @@ def run():
         with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
             df.to_excel(writer, index=False, sheet_name="ShearStud")
         st.download_button("📥 Download file", data=output.getvalue(), file_name="shear_stud_design.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-
-if __name__ == "__main__":
-    run()
