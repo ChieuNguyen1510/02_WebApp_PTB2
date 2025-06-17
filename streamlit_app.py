@@ -69,7 +69,7 @@ st.markdown("""
 # ----------------- Ngôn ngữ -----------------
 LANG = {
     "en": {
-        "title": "📱 General Engineering Toolkit",
+        "title": "General Engineering Toolkit",
         "description": "Select a tool below to perform engineering calculations.",
         "back": "🔙 Back to main menu",
         "groups": {
