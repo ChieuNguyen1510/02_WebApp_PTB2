@@ -58,7 +58,7 @@ st.markdown("""
             margin-bottom: 1em;
         }
         .footer {
-            text-align: center;
+            text-align: left;
             font-size: 14px;
             color: #666;
             margin-top: 2em;
