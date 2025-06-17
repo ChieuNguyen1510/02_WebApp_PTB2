@@ -157,7 +157,7 @@ if "selected_app" not in st.session_state:
 
 # ----------------- Giao diện chính -----------------
 if st.session_state.selected_app is None:
-    st.image("logo.png", use_column_width=False, width=200, clamp=True, output_format="PNG", channels="RGB")
+    st.image("logo.png", use_container_width=False, width=200, clamp=True, output_format="PNG", channels="RGB")
     st.title(current_lang["title"])
     st.write(current_lang["description"])
     st.markdown('<div class="footer">Created by KTP</div>', unsafe_allow_html=True)
