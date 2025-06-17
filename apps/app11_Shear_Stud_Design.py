@@ -13,7 +13,7 @@ def run():
     gammaV = 1.25
 
     # Vrd calculation (Eurocode 4 - 6.6.3.1)
-    Vrd = 0.8 * d * fu * As / gammaV
+    Vrd = 0.8 * fu * As / gammaV
 
     # Hiển thị công thức và kết quả
     st.markdown("### ✅ Shear Resistance Calculation")
@@ -25,8 +25,8 @@ def run():
 
     - Design shear resistance:  
       $$
-      V_{{Rd}} = \\frac{{0.8 \\times d \\times f_u \\times A_s}}{{\\gamma_V}} = 
-      \\frac{{0.8 \\times {d} \\times {fu} \\times {As:.1f}}}{{{gammaV}}} = {Vrd:.1f}\\ \\text{{N}} = {Vrd/1000:.2f}\\ \\text{{kN}}
+      V_{{Rd}} = \\frac{{0.8 \\times f_u \\times A_s}}{{\\gamma_V}} = 
+      \\frac{{0.8 \\times {fu} \\times {As:.1f}}}{{{gammaV}}} = {Vrd:.1f}\\ \\text{{N}} = {Vrd/1000:.2f}\\ \\text{{kN}}
       $$
     """, unsafe_allow_html=True)
 
