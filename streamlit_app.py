@@ -29,8 +29,8 @@ st.markdown("""
         }
 
         .section-title {
-            font-weight: 700;
-            font-size: 20px;
+            font-weight: 600;
+            font-size: 18px;
             margin-top: 1.5em;
             border-bottom: 2px solid #DDD;
             padding-bottom: 4px;
