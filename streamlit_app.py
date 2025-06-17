@@ -157,6 +157,7 @@ if "selected_app" not in st.session_state:
 
 # ----------------- Giao diện chính -----------------
 if st.session_state.selected_app is None:
+    # Display logo centered using CSS .logo class
     st.image("logo.png", use_container_width=False, width=200, clamp=True, output_format="PNG", channels="RGB")
     st.title(current_lang["title"])
     st.write(current_lang["description"])
