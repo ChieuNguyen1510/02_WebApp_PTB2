@@ -12,8 +12,8 @@ def run():
     As = 3.1416 * (d / 2)**2  # Cross-sectional area of one stud in mm²
     gammaV = 1.25
 
-    # Vrd calculation (Eurocode 4 - 6.6.3.1)
-    Vrd = 0.8 * fu * As / gammaV
+    # Prd calculation (Eurocode 4 - 6.6.3.1)
+    Prd = 0.8 * fu * As / gammaV
 
     # Hiển thị công thức và kết quả
     st.markdown("### ✅ Shear Resistance Calculation")
@@ -26,19 +26,28 @@ def run():
     - Design shear resistance:  
       $$
       V_{{Rd}} = \\frac{{0.8 \\times f_u \\times A_s}}{{\\gamma_V}} = 
-      \\frac{{0.8 \\times {fu} \\times {As:.1f}}}{{{gammaV}}} = {Vrd:.1f}\\ \\text{{N}} = {Vrd/1000:.2f}\\ \\text{{kN}}
+      \\frac{{0.8 \\times {fu} \\times {As:.1f}}}{{{gammaV}}} = {Prd:.1f}\\ \\text{{N}} = {Prd/1000:.2f}\\ \\text{{kN}}
       $$
     """, unsafe_allow_html=True)
 
-    st.success(f"✅ V₍Rd₎ = **{Vrd / 1000:.2f} kN**")
+    st.success(f"✅ V₍Rd₎ = **{Prd / 1000:.2f} kN**")
+
+    # Thêm chú thích
+    st.markdown("""
+    **Where:**
+    - γ_V is the partial factor;
+    - d is the diameter of the shank of the stud, 16 mm ≤ d ≤ 25 mm;
+    - f_u is the specified ultimate tensile strength of the material of the stud but not greater than 500 N/mm²;
+    **Note:** The value for γ_V may be given in the National Annex. The recommended value for γ_V is 1.25.
+    """)
 
     # Export to Excel
     st.markdown("---")
     st.markdown("📤 Export Result")
     if st.button("Download Excel"):
         df = pd.DataFrame({
-            "Parameter": ["Stud diameter (d)", "fu", "As", "Vrd"],
-            "Value": [d, fu, As, Vrd],
+            "Parameter": ["Stud diameter (d)", "fu", "As", "Prd"],
+            "Value": [d, fu, As, Prd],
             "Unit": ["mm", "MPa", "mm²", "N"]
         })
 
