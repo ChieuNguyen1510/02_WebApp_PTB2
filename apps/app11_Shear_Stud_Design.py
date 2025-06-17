@@ -38,7 +38,7 @@ def run():
     - γv is the partial factor;
     - d is the diameter of the shank of the stud, 16 mm ≤ d ≤ 25 mm;
     - fu is the specified ultimate tensile strength of the material of the stud but not greater than 500 N/mm²;
-    - Note: The value for γv may be given in the National Annex. The recommended value for γ_V is 1.25.
+    - Note: The value for γv may be given in the National Annex. The recommended value for γv is 1.25.
     """)
 
     # Export to Excel
