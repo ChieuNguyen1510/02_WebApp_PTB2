@@ -12,7 +12,7 @@ st.set_page_config(page_title="General Engineering Toolkit", layout="centered")
 # ----------------- CSS style -----------------
 st.markdown("""
     <style>
-        /* Ẩn toolbar nếu cần, nhưng không ảnh hưởng sidebar */
+        /* Ẩn toolbar nhưng không ảnh hưởng sidebar */
         [data-testid="stToolbar"] { display: none !important; }
         [data-testid="manage-app-button"] { display: none !important; }
 
@@ -64,11 +64,18 @@ st.markdown("""
             color: #666;
             margin-top: 1em;
         }
-        /* Đảm bảo sidebar luôn hiển thị */
-        .css-1v3fvcr, .stSidebar {
+        /* Đảm bảo sidebar hiển thị */
+        [data-testid="stSidebar"] {
             display: block !important;
             visibility: visible !important;
             width: 250px !important;
+            min-width: 250px !important;
+            z-index: 1000 !important;
+        }
+        /* Đảm bảo nội dung sidebar không bị ẩn */
+        .stSidebar > div {
+            display: block !important;
+            visibility: visible !important;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -136,8 +143,9 @@ with st.sidebar:
         st.session_state.selected_app = None  # Reset app khi đổi ngôn ngữ
         st.rerun()
     current_lang = LANG[st.session_state.lang]
-    # Debug: Hiển thị trạng thái ngôn ngữ
-    st.write(f"Debug: Current language: {st.session_state.lang}")
+    # Debug: Kiểm tra sidebar
+    st.write("Debug: Sidebar is rendering")
+    st.write(f"Debug: Current linguagem: {st.session_state.lang}")
 
 def _(key): 
     return current_lang["apps"].get(key, key)
@@ -195,7 +203,7 @@ else:
         if st.button(current_lang["back"], key="back_to_main"):
             st.session_state.selected_app = None
             st.rerun()
-        # Debug: Hiển thị trạng thái ứng dụng
+        # Debug: Kiểm tra ứng dụng đang chọn
         st.write(f"Debug: Current app: {st.session_state.selected_app}")
 
     for group in GROUPED_APPS.values():
