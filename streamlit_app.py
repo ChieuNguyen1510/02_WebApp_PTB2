@@ -1,5 +1,4 @@
 import streamlit as st
-import os
 
 # Load modules an toàn
 try:
@@ -52,13 +51,6 @@ st.markdown("""
         .group-concrete > div { background-color: #f2fff0; }
         .group-steel > div { background-color: #fff0f6; }
 
-        .logo {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 150px;
-            margin-bottom: 0.5em;
-        }
         .footer {
             text-align: center;
             font-size: 14px;
@@ -185,14 +177,6 @@ if "selected_app" not in st.session_state:
 
 # ----------------- Giao diện chính -----------------
 if st.session_state.selected_app is None:
-    # Kiểm tra file logo tồn tại
-    logo_path = "logo.png"
-    if os.path.exists(logo_path):
-        st.image(logo_path, width=150, output_format="PNG")
-    else:
-        st.warning("Logo file not found at 'logo.png'. Using placeholder text.")
-        st.markdown("<div class='logo'>[Logo Placeholder]</div>", unsafe_allow_html=True)
-    
     st.title(current_lang["title"])
     st.write(current_lang["description"])
     
