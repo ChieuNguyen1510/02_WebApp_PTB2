@@ -58,10 +58,14 @@ st.markdown("""
             margin-bottom: 0.5em;
         }
         .footer {
-            text-align: left;
+            text-align: center;
             font-size: 14px;
             color: #666;
             margin-top: 1em;
+        }
+        /* Đảm bảo sidebar luôn hiển thị */
+        .css-1v3fvcr {
+            display: block !important;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -120,11 +124,13 @@ LANG = {
 
 # ----------------- Chọn ngôn ngữ -----------------
 if "lang" not in st.session_state:
-    st.session_state.lang = "vi"  # Mặc định là tiếng Việt
+    st.session_state.lang = "vi"  # Mặc định tiếng Việt
 with st.sidebar:
-    lang_choice = st.radio("🌐 Ngôn ngữ", ["vi", "en"], format_func=lambda x: "Tiếng Việt" if x == "vi" else "English")
-    if lang_choice != st.session_state.lang:  # Chỉ rerun khi ngôn ngữ thay đổi
+    st.subheader("🌐 Ngôn ngữ")
+    lang_choice = st.radio("", ["vi", "en"], format_func=lambda x: "Tiếng Việt" if x == "vi" else "English", key="lang_select")
+    if lang_choice != st.session_state.lang:
         st.session_state.lang = lang_choice
+        st.session_state.selected_app = None  # Reset app khi đổi ngôn ngữ
         st.rerun()
     current_lang = LANG[st.session_state.lang]
 
@@ -163,21 +169,24 @@ if st.session_state.selected_app is None:
     st.image("logo.png", use_container_width=False, width=200, clamp=True, output_format="PNG", channels="RGB")
     st.title(current_lang["title"])
     st.write(current_lang["description"])
-
+    
     for group_key, app_list in GROUPED_APPS.items():
         st.markdown(f"<div class='section-title'>{current_lang['groups'][group_key]}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='group-{group_key}'>", unsafe_allow_html=True)
         cols = st.columns(3)
         for i, app in enumerate(app_list):
             with cols[i % 3]:
-                if st.button(f"{app['icon']} {_(app['key'])}", key=app["key"]):
+                if st.button(f"{app['icon']} {_(app['key'])}", key=f"btn_{app['key']}"):
                     st.session_state.selected_app = app["key"]
                     st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
+    
+    st.markdown('<div class="footer">Created by KTP</div>', unsafe_allow_html=True)
 
 # ----------------- App con -----------------
 else:
     with st.sidebar:
+        st.subheader("Điều hướng")
         if st.button(current_lang["back"], key="back_to_main"):
             st.session_state.selected_app = None
             st.rerun()
