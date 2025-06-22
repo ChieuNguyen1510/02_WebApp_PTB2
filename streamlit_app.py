@@ -146,7 +146,7 @@ GROUPED_APPS = {
     ],
     "steel": [
         {"key": "Anchor Bolt Capacity", "icon": "🔧", "func": getattr(app9_Anchor_Bolt_Capacity, "run", None)},
-        {"key": "Base Plate Checker", "icon": "🧾", "func": getattr(app10_Base_Plate_Checker, "run", None)},
+        {"key": "Base Plate Checker", "icon": "🧮", "func": getattr(app10_Base_Plate_Checker, "run", None)},
         {"key": "Shear Stud Design", "icon": "🪛", "func": getattr(app11_Shear_Stud_Design, "run", None)},
     ]
 }
