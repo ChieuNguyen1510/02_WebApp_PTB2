@@ -7,11 +7,12 @@ except ImportError as e:
     st.error(f"Lỗi khi tải module ứng dụng: {str(e)}")
     st.stop()
 
-st.set_page_config(page_title="Bộ Công cụ Kỹ thuật Xây dựng", layout="centered")
+st.set_page_config(page_title="General Engineering Toolkit", layout="centered")
 
 # ----------------- CSS style -----------------
 st.markdown("""
     <style>
+        /* Ẩn toolbar nếu cần, nhưng không ảnh hưởng sidebar */
         [data-testid="stToolbar"] { display: none !important; }
         [data-testid="manage-app-button"] { display: none !important; }
 
@@ -64,8 +65,10 @@ st.markdown("""
             margin-top: 1em;
         }
         /* Đảm bảo sidebar luôn hiển thị */
-        .css-1v3fvcr {
+        .css-1v3fvcr, .stSidebar {
             display: block !important;
+            visibility: visible !important;
+            width: 250px !important;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -124,15 +127,17 @@ LANG = {
 
 # ----------------- Chọn ngôn ngữ -----------------
 if "lang" not in st.session_state:
-    st.session_state.lang = "vi"  # Mặc định tiếng Việt
+    st.session_state.lang = "en"  # Mặc định tiếng Anh
 with st.sidebar:
-    st.subheader("🌐 Ngôn ngữ")
-    lang_choice = st.radio("", ["vi", "en"], format_func=lambda x: "Tiếng Việt" if x == "vi" else "English", key="lang_select")
+    st.subheader("🌐 Language / Ngôn ngữ")
+    lang_choice = st.radio("", ["en", "vi"], format_func=lambda x: "English" if x == "en" else "Tiếng Việt", key="lang_select")
     if lang_choice != st.session_state.lang:
         st.session_state.lang = lang_choice
         st.session_state.selected_app = None  # Reset app khi đổi ngôn ngữ
         st.rerun()
     current_lang = LANG[st.session_state.lang]
+    # Debug: Hiển thị trạng thái ngôn ngữ
+    st.write(f"Debug: Current language: {st.session_state.lang}")
 
 def _(key): 
     return current_lang["apps"].get(key, key)
@@ -186,10 +191,12 @@ if st.session_state.selected_app is None:
 # ----------------- App con -----------------
 else:
     with st.sidebar:
-        st.subheader("Điều hướng")
+        st.subheader("Navigation / Điều hướng")
         if st.button(current_lang["back"], key="back_to_main"):
             st.session_state.selected_app = None
             st.rerun()
+        # Debug: Hiển thị trạng thái ứng dụng
+        st.write(f"Debug: Current app: {st.session_state.selected_app}")
 
     for group in GROUPED_APPS.values():
         for app in group:
@@ -198,4 +205,4 @@ else:
                 if app["func"] is not None:
                     app["func"]()
                 else:
-                    st.error(f"Ứng dụng {_(app['key'])} chưa được triển khai.")
+                    st.error(f"Application {_(app['key'])} has not been implemented.")
