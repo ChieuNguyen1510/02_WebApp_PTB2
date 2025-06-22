@@ -4,7 +4,7 @@ import streamlit as st
 try:
     from apps import *
 except ImportError as e:
-    st.error(f"Lỗi khi tải module ứng dụng: {str(e)}")
+    st.error(f"Failed to load app modules: {str(e)}")
     st.stop()
 
 st.set_page_config(page_title="General Engineering Toolkit", layout="centered")
@@ -12,7 +12,6 @@ st.set_page_config(page_title="General Engineering Toolkit", layout="centered")
 # ----------------- CSS style -----------------
 st.markdown("""
     <style>
-        /* Ẩn toolbar nhưng không ảnh hưởng sidebar */
         [data-testid="stToolbar"] { display: none !important; }
         [data-testid="manage-app-button"] { display: none !important; }
 
@@ -30,8 +29,8 @@ st.markdown("""
         }
 
         .section-title {
-            font-weight: 600;
-            font-size: 16px;
+            font-weight: 700;
+            font-size: 20px;
             margin-top: 1.5em;
             border-bottom: 2px solid #DDD;
             padding-bottom: 4px;
@@ -50,39 +49,13 @@ st.markdown("""
         .group-loads > div { background-color: #fff7e6; }
         .group-concrete > div { background-color: #f2fff0; }
         .group-steel > div { background-color: #fff0f6; }
-
-        .footer {
-            text-align: center;
-            font-size: 14px;
-            color: #666;
-            margin-top: 1em;
-        }
-        /* Đảm bảo sidebar hiển thị */
-        [data-testid="stSidebar"] {
-            display: block !important;
-            visibility: visible !important;
-            width: 250px !important;
-            min-width: 250px !important;
-            z-index: 1000 !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-        }
-        .stSidebar > div {
-            display: block !important;
-            visibility: visible !important;
-        }
-        /* Đảm bảo nội dung chính không bị đè */
-        .stApp {
-            margin-left: 250px !important;
-        }
     </style>
 """, unsafe_allow_html=True)
 
-# ----------------- Từ điển ngôn ngữ -----------------
+# ----------------- Ngôn ngữ -----------------
 LANG = {
     "en": {
-        "title": "General Engineering Toolkit",
+        "title": "📱 General Engineering Toolkit",
         "description": "Select a tool below to perform engineering calculations.",
         "back": "🔙 Back to main menu",
         "groups": {
@@ -133,27 +106,20 @@ LANG = {
 
 # ----------------- Chọn ngôn ngữ -----------------
 if "lang" not in st.session_state:
-    st.session_state.lang = "en"  # Mặc định tiếng Anh
+    st.session_state.lang = "en"
 with st.sidebar:
-    st.subheader("🌐 Language / Ngôn ngữ")
-    lang_choice = st.radio("", ["en", "vi"], format_func=lambda x: "English" if x == "en" else "Tiếng Việt", key="lang_select")
-    if lang_choice != st.session_state.lang:
-        st.session_state.lang = lang_choice
-        st.session_state.selected_app = None  # Reset app khi đổi ngôn ngữ
-        st.rerun()
-    current_lang = LANG[st.session_state.lang]
-    st.write("Debug: Sidebar is rendering")
-    st.write(f"Debug: Current language: {st.session_state.lang}")
+    lang_choice = st.radio("🌐 Language / Ngôn ngữ", ["en", "vi"], format_func=lambda x: "English" if x == "en" else "Tiếng Việt")
+    st.session_state.lang = lang_choice
+    current_lang = LANG[lang_choice]
 
-def _(key): 
-    return current_lang["apps"].get(key, key)
+def _(key): return current_lang["apps"].get(key, key)
 
 # ----------------- Danh sách nhóm app -----------------
 GROUPED_APPS = {
     "lookup": [
         {"key": "Convert Unit", "icon": "🔁", "func": getattr(app1_Convert_Unit, "run", None)},
-        {"key": "Concrete Strength", "icon": "🧊", "func": getattr(app2_Concrete_Strength_Table, "run", None)},
-        {"key": "Steel Strength", "icon": "⛓️", "func": getattr(app3_Steel_Strength_Lookup, "run", None)},
+        {"key": "Concrete Strength", "icon": "🏗️", "func": getattr(app2_Concrete_Strength_Table, "run", None)},
+        {"key": "Steel Strength", "icon": "🔩", "func": getattr(app3_Steel_Strength_Lookup, "run", None)},
         {"key": "Reinforcement Area", "icon": "🧮", "func": getattr(app4_Steel_Reinforcement_Area, "run", None)},
     ],
     "loads": [
@@ -166,7 +132,7 @@ GROUPED_APPS = {
     ],
     "steel": [
         {"key": "Anchor Bolt Capacity", "icon": "🔧", "func": getattr(app9_Anchor_Bolt_Capacity, "run", None)},
-        {"key": "Base Plate Checker", "icon": "🧮", "func": getattr(app10_Base_Plate_Checker, "run", None)},
+        {"key": "Base Plate Checker", "icon": "🪛", "func": getattr(app10_Base_Plate_Checker, "run", None)},
         {"key": "Shear Stud Design", "icon": "🪛", "func": getattr(app11_Shear_Stud_Design, "run", None)},
     ]
 }
@@ -179,34 +145,28 @@ if "selected_app" not in st.session_state:
 if st.session_state.selected_app is None:
     st.title(current_lang["title"])
     st.write(current_lang["description"])
-    
+
     for group_key, app_list in GROUPED_APPS.items():
         st.markdown(f"<div class='section-title'>{current_lang['groups'][group_key]}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='group-{group_key}'>", unsafe_allow_html=True)
         cols = st.columns(3)
         for i, app in enumerate(app_list):
             with cols[i % 3]:
-                if st.button(f"{app['icon']} {_(app['key'])}", key=f"btn_{app['key']}"):
+                if st.button(f"{app['icon']} {_(app['key'])}", key=app["key"]):
                     st.session_state.selected_app = app["key"]
                     st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
-    
-    st.markdown('<div class="footer">Created by KTP</div>', unsafe_allow_html=True)
 
 # ----------------- App con -----------------
 else:
     with st.sidebar:
-        st.subheader("Navigation / Điều hướng")
-        if st.button(current_lang["back"], key="back_to_main"):
+        if st.button(current_lang["back"]):
             st.session_state.selected_app = None
             st.rerun()
-        st.write(f"Debug: Current app: {st.session_state.selected_app}")
 
     for group in GROUPED_APPS.values():
         for app in group:
             if app["key"] == st.session_state.selected_app:
                 st.subheader(f"{app['icon']} {_(app['key'])}")
-                if app["func"] is not None:
-                    app["func"]()
-                else:
-                    st.error(f"Application {_(app['key'])} has not been implemented.")
+                app["func"]()
+
