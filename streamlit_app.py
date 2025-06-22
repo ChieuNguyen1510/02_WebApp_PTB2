@@ -7,7 +7,7 @@ except ImportError as e:
     st.error(f"Lỗi khi tải module ứng dụng: {str(e)}")
     st.stop()
 
-st.set_page_config(page_title="General Engineering Toolkit", layout="wide")
+st.set_page_config(page_title="General Engineering Toolkit", layout="centered")
 
 # ----------------- CSS style -----------------
 st.markdown("""
