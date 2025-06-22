@@ -170,4 +170,59 @@ GROUPED_APPS = {
     ],
     "concrete": [
         {"key": "Section Calculator", "icon": "📐", "func": getattr(app7_Structural_Section_Calculator, "run", None)},
-        {"key": "Column PM Interaction", "icon": "📉", "func": getattr(app8_Column_PMM_Interaction, "run
+        {"key": "Column PM Interaction", "icon": "📉", "func": getattr(app8_Column_PMM_Interaction, "run", None)},
+    ],
+    "steel": [
+        {"key": "Anchor Bolt Capacity", "icon": "🔧", "func": getattr(app9_Anchor_Bolt_Capacity, "run", None)},
+        {"key": "Base Plate Checker", "icon": "🧮", "func": getattr(app10_Base_Plate_Checker, "run", None)},
+        {"key": "Shear Stud Design", "icon": "🪛", "func": getattr(app11_Shear_Stud_Design, "run", None)},
+    ]
+}
+
+# ----------------- State điều hướng -----------------
+if "selected_app" not in st.session_state:
+    st.session_state.selected_app = None
+
+# ----------------- Giao diện chính -----------------
+if st.session_state.selected_app is None:
+    # Kiểm tra file logo tồn tại
+    logo_path = "logo.png"
+    if os.path.exists(logo_path):
+        st.image(logo_path, width=150, output_format="PNG")
+    else:
+        st.warning("Logo file not found at 'logo.png'. Using placeholder text.")
+        st.markdown("<div class='logo'>[Logo Placeholder]</div>", unsafe_allow_html=True)
+    
+    st.title(current_lang["title"])
+    st.write(current_lang["description"])
+    
+    for group_key, app_list in GROUPED_APPS.items():
+        st.markdown(f"<div class='section-title'>{current_lang['groups'][group_key]}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='group-{group_key}'>", unsafe_allow_html=True)
+        cols = st.columns(3)
+        for i, app in enumerate(app_list):
+            with cols[i % 3]:
+                if st.button(f"{app['icon']} {_(app['key'])}", key=f"btn_{app['key']}"):
+                    st.session_state.selected_app = app["key"]
+                    st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
+    
+    st.markdown('<div class="footer">Created by KTP</div>', unsafe_allow_html=True)
+
+# ----------------- App con -----------------
+else:
+    with st.sidebar:
+        st.subheader("Navigation / Điều hướng")
+        if st.button(current_lang["back"], key="back_to_main"):
+            st.session_state.selected_app = None
+            st.rerun()
+        st.write(f"Debug: Current app: {st.session_state.selected_app}")
+
+    for group in GROUPED_APPS.values():
+        for app in group:
+            if app["key"] == st.session_state.selected_app:
+                st.subheader(f"{app['icon']} {_(app['key'])}")
+                if app["func"] is not None:
+                    app["func"]()
+                else:
+                    st.error(f"Application {_(app['key'])} has not been implemented.")
