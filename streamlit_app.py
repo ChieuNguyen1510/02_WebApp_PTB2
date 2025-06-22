@@ -76,6 +76,8 @@ st.markdown("""
         .stSidebar > div {
             display: block !important;
             visibility: visible !important;
+            width: 250px !important;
+
         }
     </style>
 """, unsafe_allow_html=True)
