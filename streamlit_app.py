@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 
 # Load modules an toàn
 try:
@@ -71,13 +72,17 @@ st.markdown("""
             width: 250px !important;
             min-width: 250px !important;
             z-index: 1000 !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
         }
-        /* Đảm bảo nội dung sidebar không bị ẩn */
         .stSidebar > div {
             display: block !important;
             visibility: visible !important;
-            width: 250px !important;
-
+        }
+        /* Đảm bảo nội dung chính không bị đè */
+        .stApp {
+            margin-left: 250px !important;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -145,9 +150,8 @@ with st.sidebar:
         st.session_state.selected_app = None  # Reset app khi đổi ngôn ngữ
         st.rerun()
     current_lang = LANG[st.session_state.lang]
-    # Debug: Kiểm tra sidebar
     st.write("Debug: Sidebar is rendering")
-    st.write(f"Debug: Current linguagem: {st.session_state.lang}")
+    st.write(f"Debug: Current language: {st.session_state.lang}")
 
 def _(key): 
     return current_lang["apps"].get(key, key)
@@ -166,53 +170,4 @@ GROUPED_APPS = {
     ],
     "concrete": [
         {"key": "Section Calculator", "icon": "📐", "func": getattr(app7_Structural_Section_Calculator, "run", None)},
-        {"key": "Column PM Interaction", "icon": "📉", "func": getattr(app8_Column_PMM_Interaction, "run", None)},
-    ],
-    "steel": [
-        {"key": "Anchor Bolt Capacity", "icon": "🔧", "func": getattr(app9_Anchor_Bolt_Capacity, "run", None)},
-        {"key": "Base Plate Checker", "icon": "🧮", "func": getattr(app10_Base_Plate_Checker, "run", None)},
-        {"key": "Shear Stud Design", "icon": "🪛", "func": getattr(app11_Shear_Stud_Design, "run", None)},
-    ]
-}
-
-# ----------------- State điều hướng -----------------
-if "selected_app" not in st.session_state:
-    st.session_state.selected_app = None
-
-# ----------------- Giao diện chính -----------------
-if st.session_state.selected_app is None:
-    st.image("logo.png", use_container_width=False, width=200, clamp=True, output_format="PNG", channels="RGB")
-    st.title(current_lang["title"])
-    st.write(current_lang["description"])
-    
-    for group_key, app_list in GROUPED_APPS.items():
-        st.markdown(f"<div class='section-title'>{current_lang['groups'][group_key]}</div>", unsafe_allow_html=True)
-        st.markdown(f"<div class='group-{group_key}'>", unsafe_allow_html=True)
-        cols = st.columns(3)
-        for i, app in enumerate(app_list):
-            with cols[i % 3]:
-                if st.button(f"{app['icon']} {_(app['key'])}", key=f"btn_{app['key']}"):
-                    st.session_state.selected_app = app["key"]
-                    st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
-    
-    st.markdown('<div class="footer">Created by KTP</div>', unsafe_allow_html=True)
-
-# ----------------- App con -----------------
-else:
-    with st.sidebar:
-        st.subheader("Navigation / Điều hướng")
-        if st.button(current_lang["back"], key="back_to_main"):
-            st.session_state.selected_app = None
-            st.rerun()
-        # Debug: Kiểm tra ứng dụng đang chọn
-        st.write(f"Debug: Current app: {st.session_state.selected_app}")
-
-    for group in GROUPED_APPS.values():
-        for app in group:
-            if app["key"] == st.session_state.selected_app:
-                st.subheader(f"{app['icon']} {_(app['key'])}")
-                if app["func"] is not None:
-                    app["func"]()
-                else:
-                    st.error(f"Application {_(app['key'])} has not been implemented.")
+        {"key": "Column PM Interaction", "icon": "📉", "func": getattr(app8_Column_PMM_Interaction, "run
