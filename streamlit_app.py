@@ -29,8 +29,8 @@ st.markdown("""
         }
 
         .section-title {
-            font-weight: 700;
-            font-size: 20px;
+            font-weight: 600;
+            font-size: 16px;
             margin-top: 1.5em;
             border-bottom: 2px solid #DDD;
             padding-bottom: 4px;
@@ -49,13 +49,27 @@ st.markdown("""
         .group-loads > div { background-color: #fff7e6; }
         .group-concrete > div { background-color: #f2fff0; }
         .group-steel > div { background-color: #fff0f6; }
+
+        .logo {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 150px;
+            margin-bottom: 0.5em;
+        }
+        .footer {
+            text-align: left;
+            font-size: 14px;
+            color: #666;
+            margin-top: 1em;
+        }
     </style>
 """, unsafe_allow_html=True)
 
 # ----------------- Ngôn ngữ -----------------
 LANG = {
     "en": {
-        "title": "📱 General Engineering Toolkit",
+        "title": "General Engineering Toolkit",
         "description": "Select a tool below to perform engineering calculations.",
         "back": "🔙 Back to main menu",
         "groups": {
@@ -118,8 +132,8 @@ def _(key): return current_lang["apps"].get(key, key)
 GROUPED_APPS = {
     "lookup": [
         {"key": "Convert Unit", "icon": "🔁", "func": getattr(app1_Convert_Unit, "run", None)},
-        {"key": "Concrete Strength", "icon": "🏗️", "func": getattr(app2_Concrete_Strength_Table, "run", None)},
-        {"key": "Steel Strength", "icon": "🔩", "func": getattr(app3_Steel_Strength_Lookup, "run", None)},
+        {"key": "Concrete Strength", "icon": "🧊", "func": getattr(app2_Concrete_Strength_Table, "run", None)},
+        {"key": "Steel Strength", "icon": "⛓️", "func": getattr(app3_Steel_Strength_Lookup, "run", None)},
         {"key": "Reinforcement Area", "icon": "🧮", "func": getattr(app4_Steel_Reinforcement_Area, "run", None)},
     ],
     "loads": [
@@ -132,7 +146,7 @@ GROUPED_APPS = {
     ],
     "steel": [
         {"key": "Anchor Bolt Capacity", "icon": "🔧", "func": getattr(app9_Anchor_Bolt_Capacity, "run", None)},
-        {"key": "Base Plate Checker", "icon": "🪛", "func": getattr(app10_Base_Plate_Checker, "run", None)},
+        {"key": "Base Plate Checker", "icon": "🧮", "func": getattr(app10_Base_Plate_Checker, "run", None)},
         {"key": "Shear Stud Design", "icon": "🪛", "func": getattr(app11_Shear_Stud_Design, "run", None)},
     ]
 }
@@ -143,6 +157,9 @@ if "selected_app" not in st.session_state:
 
 # ----------------- Giao diện chính -----------------
 if st.session_state.selected_app is None:
+    # Display logo centered using CSS .logo class
+    st.image("logo.png", use_container_width=False, width=200, clamp=True, output_format="PNG", channels="RGB")
+    # st.markdown('<div class="footer">Created by KTP</div>', unsafe_allow_html=True)
     st.title(current_lang["title"])
     st.write(current_lang["description"])
 
@@ -169,4 +186,3 @@ else:
             if app["key"] == st.session_state.selected_app:
                 st.subheader(f"{app['icon']} {_(app['key'])}")
                 app["func"]()
-
