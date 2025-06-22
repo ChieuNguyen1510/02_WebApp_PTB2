@@ -4,10 +4,10 @@ import streamlit as st
 try:
     from apps import *
 except ImportError as e:
-    st.error(f"Failed to load app modules: {str(e)}")
+    st.error(f"Lỗi khi tải module ứng dụng: {str(e)}")
     st.stop()
 
-st.set_page_config(page_title="General Engineering Toolkit", layout="centered")
+st.set_page_config(page_title="Bộ Công cụ Kỹ thuật Xây dựng", layout="centered")
 
 # ----------------- CSS style -----------------
 st.markdown("""
@@ -66,7 +66,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ----------------- Ngôn ngữ -----------------
+# ----------------- Từ điển ngôn ngữ -----------------
 LANG = {
     "en": {
         "title": "General Engineering Toolkit",
@@ -120,13 +120,16 @@ LANG = {
 
 # ----------------- Chọn ngôn ngữ -----------------
 if "lang" not in st.session_state:
-    st.session_state.lang = "en"
+    st.session_state.lang = "vi"  # Mặc định là tiếng Việt
 with st.sidebar:
-    lang_choice = st.radio("🌐 Language / Ngôn ngữ", ["en", "vi"], format_func=lambda x: "English" if x == "en" else "Tiếng Việt")
-    st.session_state.lang = lang_choice
-    current_lang = LANG[lang_choice]
+    lang_choice = st.radio("🌐 Ngôn ngữ", ["vi", "en"], format_func=lambda x: "Tiếng Việt" if x == "vi" else "English")
+    if lang_choice != st.session_state.lang:  # Chỉ rerun khi ngôn ngữ thay đổi
+        st.session_state.lang = lang_choice
+        st.rerun()
+    current_lang = LANG[st.session_state.lang]
 
-def _(key): return current_lang["apps"].get(key, key)
+def _(key): 
+    return current_lang["apps"].get(key, key)
 
 # ----------------- Danh sách nhóm app -----------------
 GROUPED_APPS = {
@@ -157,9 +160,7 @@ if "selected_app" not in st.session_state:
 
 # ----------------- Giao diện chính -----------------
 if st.session_state.selected_app is None:
-    # Display logo centered using CSS .logo class
     st.image("logo.png", use_container_width=False, width=200, clamp=True, output_format="PNG", channels="RGB")
-    # st.markdown('<div class="footer">Created by KTP</div>', unsafe_allow_html=True)
     st.title(current_lang["title"])
     st.write(current_lang["description"])
 
@@ -177,7 +178,7 @@ if st.session_state.selected_app is None:
 # ----------------- App con -----------------
 else:
     with st.sidebar:
-        if st.button(current_lang["back"]):
+        if st.button(current_lang["back"], key="back_to_main"):
             st.session_state.selected_app = None
             st.rerun()
 
@@ -185,4 +186,7 @@ else:
         for app in group:
             if app["key"] == st.session_state.selected_app:
                 st.subheader(f"{app['icon']} {_(app['key'])}")
-                app["func"]()
+                if app["func"] is not None:
+                    app["func"]()
+                else:
+                    st.error(f"Ứng dụng {_(app['key'])} chưa được triển khai.")
