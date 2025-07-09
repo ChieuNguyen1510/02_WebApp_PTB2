@@ -30,6 +30,6 @@ __all__ = [
     "app11_Shear_Stud_Design",
     "app12_Beam_Load_Analysis_Tool",
     "app13_Column_Load_Capacity",
-    "app14_Punching_Shear"
-    "app15_Column_Slenderness"
+    "app14_Punching_Shear",
+    "app15_Column_Slenderness",
 ]
