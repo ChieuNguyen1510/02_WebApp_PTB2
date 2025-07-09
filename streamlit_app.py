@@ -90,6 +90,7 @@ LANG = {
             "Anchor Bolt Capacity": "Anchor Bolt Capacity",
             "Base Plate Checker": "Base Plate Checker",
             "Shear Stud Design": "Shear Stud Design"
+            "Beam Load Analysis Tool": "Beam Load Analysis Tool"
         }
     },
     "vi": {
