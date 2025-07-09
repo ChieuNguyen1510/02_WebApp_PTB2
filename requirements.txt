@@ -2,3 +2,5 @@ streamlit
 openai
 xlsxwriter
 matplotlib
+pandas
+numpy
