@@ -114,6 +114,7 @@ LANG = {
             "Anchor Bolt Capacity": "Kiểm tra bulong",
             "Base Plate Checker": "Kiểm tra bản đế",
             "Shear Stud Design": "Kiểm tra cắt bulong"
+            "Beam Load Analysis Tool": "Tính toán dầm BTCT"
         }
     }
 }
@@ -143,6 +144,7 @@ GROUPED_APPS = {
     "concrete": [
         {"key": "Section Calculator", "icon": "📐", "func": getattr(app7_Structural_Section_Calculator, "run", None)},
         {"key": "Column PM Interaction", "icon": "📉", "func": getattr(app8_Column_PMM_Interaction, "run", None)},
+        {"key": "Beam Load Analysis Tool", "icon": "📉", "func": getattr(app12_Beam_Load_Analysis_Tool, "run", None)},
     ],
     "steel": [
         {"key": "Anchor Bolt Capacity", "icon": "🔧", "func": getattr(app9_Anchor_Bolt_Capacity, "run", None)},
