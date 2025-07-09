@@ -5,11 +5,19 @@ from io import BytesIO
 # Eurocode và TCVN các hệ số khuyến nghị
 standards = {
     "Eurocode 2": {
-        "lambda_lim": 90,  # Giới hạn độ mảnh với cột chịu nén đồng tâm
+        "lambda_lim": 90,
     },
     "TCVN 5574:2018": {
-        "lambda_lim": 70,  # Hệ số giới hạn độ mảnh với cột chịu nén
+        "lambda_lim": 70,
     }
+}
+
+boundary_factors = {
+    "Pinned - Pinned": 1.0,
+    "Fixed - Free": 2.0,
+    "Fixed - Fixed": 0.7,
+    "Pinned - Fixed": 0.8,
+    "Free - Free": 2.1
 }
 
 def run():
@@ -20,21 +28,23 @@ def run():
     lambda_lim = standards[code]["lambda_lim"]
 
     st.markdown("### 🔧 Input Parameters")
-    L = st.number_input("Effective Length L (mm)", value=3000.0, min_value=100.0)
-    r = st.number_input("Radius of Gyration r (mm)", value=50.0, min_value=1.0)
+    L_actual = st.number_input("Actual Length of Column L_actual (mm)", value=3000.0, min_value=100.0)
+    bc = st.selectbox("Boundary Condition (for effective length estimation):", list(boundary_factors.keys()))
+    b = st.number_input("Width of Column Section b (mm)", value=300.0, min_value=50.0)
+    h = st.number_input("Height of Column Section h (mm)", value=500.0, min_value=50.0)
 
-    # ===== Điều kiện biên minh họa =====
-    st.markdown("""
-    #### 🔒 Boundary Conditions (for estimating L)
-    - **Pinned - Pinned**: L = actual length
-    - **Fixed - Free**: L = 2 × actual length
-    - **Fixed - Fixed**: L = 0.7 × actual length
-    """)
+    # ===== Tính toán =====
+    L = L_actual * boundary_factors[bc]
+    I = (b * h**3) / 12  # mm^4
+    A = b * h  # mm^2
+    r = (I / A) ** 0.5  # mm
 
     if st.button("Check Slenderness"):
         lambda_val = L / r
 
         st.markdown("### 📊 Results")
+        st.write(f"Effective Length (L) = **{L:.2f} mm**")
+        st.write(f"Radius of Gyration (r) = **{r:.2f} mm**")
         st.write(f"Slenderness ratio λ = **{lambda_val:.2f}**")
         st.write(f"Limit value λ<sub>lim</sub> = **{lambda_lim}** ({code})", unsafe_allow_html=True)
 
@@ -45,9 +55,9 @@ def run():
 
         # Export kết quả ra Excel
         df = pd.DataFrame({
-            "Parameter": ["Effective Length", "Radius of Gyration", "λ", "λ_lim", "Status"],
-            "Value": [L, r, lambda_val, lambda_lim, "Short" if lambda_val <= lambda_lim else "Slender"],
-            "Unit": ["mm", "mm", "-", "-", ""]
+            "Parameter": ["Actual Length", "Boundary Factor", "Effective Length", "Section Width", "Section Height", "Radius of Gyration", "λ", "λ_lim", "Status"],
+            "Value": [L_actual, boundary_factors[bc], L, b, h, r, lambda_val, lambda_lim, "Short" if lambda_val <= lambda_lim else "Slender"],
+            "Unit": ["mm", "-", "mm", "mm", "mm", "mm", "-", "-", ""]
         })
 
         output = BytesIO()
