@@ -10,62 +10,144 @@ except ImportError as e:
 st.set_page_config(page_title="General Engineering Toolkit", layout="centered")
 
 # ----------------- CSS style -----------------
+# st.markdown("""
+#     <style>
+#         [data-testid="stToolbar"] { display: none !important; }
+#         [data-testid="manage-app-button"] { display: none !important; }
+
+#         div.stButton > button {
+#        		background-color: #f0f8ff; /* light pastel blue */
+#             width: 100%;
+#             padding: 12px;
+#             font-size: 16px;
+#             border-radius: 8px;
+#             transition: 0.3s;
+#             border: 1px solid #bbb;
+#         }
+#         div.stButton > button:hover {
+#             background-color: #f0f0f0 !important;
+#             border-color: #999;
+#         }
+
+#         .section-title {
+#             font-weight: 600;
+#             font-size: 18px;
+#             margin-top: 1.5em;
+#             border-bottom: 2px solid #DDD;
+#             padding-bottom: 4px;
+#         }
+
+#         .group-lookup > div,
+#         .group-loads > div,
+#         .group-concrete > div,
+#         .group-steel > div {
+#             background-color: #fafafa;
+#             padding: 1rem;
+#             border-radius: 10px;
+#             margin-bottom: 1rem;
+#         }
+#         .group-lookup > div { background-color: #eef6ff; }
+#         .group-loads > div { background-color: #fff7e6; }
+#         .group-concrete > div { background-color: #f2fff0; }
+#         .group-steel > div { background-color: #fff0f6; }
+
+#         .logo {
+#             display: block;
+#             margin-left: auto;
+#             margin-right: auto;
+#             width: 150px;
+#             margin-bottom: 0.5em;
+#         }
+#         .footer {
+#             text-align: left;
+#             font-size: 14px;
+#             color: #666;
+#             margin-top: 1em;
+#         }
+#     </style>
+# """, unsafe_allow_html=True)
+
+
+
+
 st.markdown("""
-    <style>
-        [data-testid="stToolbar"] { display: none !important; }
-        [data-testid="manage-app-button"] { display: none !important; }
+<style>
+/* Ẩn thanh công cụ Streamlit */
+[data-testid="stToolbar"], [data-testid="manage-app-button"] {
+    display: none !important;
+}
 
-        div.stButton > button {
-       		background-color: #f0f8ff; /* light pastel blue */
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 8px;
-            transition: 0.3s;
-            border: 1px solid #bbb;
-        }
-        div.stButton > button:hover {
-            background-color: #f0f0f0 !important;
-            border-color: #999;
-        }
+/* ===== Nút app con ===== */
+div.stButton > button {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 6px 0;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 500;
+    transition: 0.3s;
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
+}
+div.stButton > button:hover {
+    background-color: #e6f0ff !important;
+    border-color: #3399ff;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+}
 
-        .section-title {
-            font-weight: 600;
-            font-size: 18px;
-            margin-top: 1.5em;
-            border-bottom: 2px solid #DDD;
-            padding-bottom: 4px;
-        }
+/* ===== Tiêu đề nhóm ===== */
+.section-title {
+    background: linear-gradient(to right, #3399ff, #e6f0ff);
+    padding: 10px 15px;
+    font-size: 18px;
+    color: #003366;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    margin-top: 1.5em;
+    font-weight: 600;
+}
 
-        .group-lookup > div,
-        .group-loads > div,
-        .group-concrete > div,
-        .group-steel > div {
-            background-color: #fafafa;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-        }
-        .group-lookup > div { background-color: #eef6ff; }
-        .group-loads > div { background-color: #fff7e6; }
-        .group-concrete > div { background-color: #f2fff0; }
-        .group-steel > div { background-color: #fff0f6; }
+/* ===== Vùng nền cho từng nhóm app ===== */
+.group-lookup > div,
+.group-loads > div,
+.group-concrete > div,
+.group-steel > div {
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 0 5px rgba(0,0,0,0.05);
+}
 
-        .logo {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 150px;
-            margin-bottom: 0.5em;
-        }
-        .footer {
-            text-align: left;
-            font-size: 14px;
-            color: #666;
-            margin-top: 1em;
-        }
-    </style>
+/* Màu nền riêng biệt */
+.group-lookup > div    { background-color: #e8f3ff; }  /* light blue */
+.group-loads > div     { background-color: #fff4e6; }  /* light orange */
+.group-concrete > div  { background-color: #ebffe8; }  /* light green */
+.group-steel > div     { background-color: #ffe6f2; }  /* light pink */
+
+/* Logo căn giữa */
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 150px;
+    margin-bottom: 0.5em;
+}
+
+/* Footer */
+.footer {
+    text-align: left;
+    font-size: 14px;
+    color: #666;
+    margin-top: 1em;
+}
+</style>
 """, unsafe_allow_html=True)
+
+
+
+
+
 
 # ----------------- Ngôn ngữ -----------------
 LANG = {
