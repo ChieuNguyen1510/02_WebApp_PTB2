@@ -9,6 +9,8 @@ from . import app8_Column_PMM_Interaction
 from . import app9_Anchor_Bolt_Capacity
 from . import app10_Base_Plate_Checker
 from . import app11_Shear_Stud_Design
+from . import app12_Beam_Load_Analysis_Tool
+
 
 __all__ = [
     "app1_Convert_Unit",
@@ -22,4 +24,5 @@ __all__ = [
     "app9_Anchor_Bolt_Capacity",
     "app10_Base_Plate_Checker",
     "app11_Shear_Stud_Design"
+    "app12_Beam_Load_Analysis_Tool"
 ]
