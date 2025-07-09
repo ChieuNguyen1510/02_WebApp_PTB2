@@ -91,7 +91,7 @@ LANG = {
             "Base Plate Checker": "Base Plate Checker",
             "Shear Stud Design": "Shear Stud Design",
             "Beam Load Analysis Tool": "Beam Load Analysis Tool",
-            "Column Load Capacity": "Column Load Capacity"
+            "Column Load Capacity": "Column Load Capacity",
             "Punching Shear": "Punching Shear"
         }
     },
