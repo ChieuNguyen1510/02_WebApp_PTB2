@@ -113,7 +113,7 @@ LANG = {
             "Column PM Interaction": "Kiểm tra cột",
             "Anchor Bolt Capacity": "Kiểm tra bulong",
             "Base Plate Checker": "Kiểm tra bản đế",
-            "Shear Stud Design": "Kiểm tra cắt bulong"
+            "Shear Stud Design": "Kiểm tra cắt bulong",
             "Beam Load Analysis Tool": "Tính toán dầm BTCT"
         }
     }
