@@ -93,6 +93,7 @@ LANG = {
             "Beam Load Analysis Tool": "Beam Load Analysis Tool",
             "Column Load Capacity": "Column Load Capacity",
             "Punching Shear": "Punching Shear"
+            "Column Slenderness": "Column Slenderness"
         }
     },
     "vi": {
@@ -120,6 +121,7 @@ LANG = {
             "Beam Load Analysis Tool": "Tính toán dầm BTCT",
             "Column Load Capacity": "Kiểm tra cột",
             "Punching Shear": "Chọc thủng sàn",
+            "Column Slenderness": "Độ mảnh cột",
         }
     }
 }
