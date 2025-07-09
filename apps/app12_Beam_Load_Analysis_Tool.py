@@ -17,6 +17,7 @@ def calculate_beam(length, uniform_load, point_load, point_pos, E, I):
     return max_moment, max_shear, deflection
 
 def plot_beam(length, uniform_load, point_load, point_pos):
+    fig, ax = plt.subplots()
     x = np.linspace(0, length, 100)
     m = np.zeros_like(x)
     for i in range(len(x)):
@@ -24,11 +25,11 @@ def plot_beam(length, uniform_load, point_load, point_pos):
             m[i] = (uniform_load * x[i]**2 / 2) + (point_load * x[i] / length * (length - point_pos))
         else:
             m[i] = (uniform_load * x[i]**2 / 2) - (uniform_load * x[i] * (x[i] - length)) + (point_load * (x[i] - point_pos))
-    plt.plot(x, m)
-    plt.title("Bending Moment Diagram")
-    plt.xlabel("Length (m)")
-    plt.ylabel("Moment (kNm)")
-    st.pyplot()
+    ax.plot(x, m)
+    ax.set_title("Bending Moment Diagram")
+    ax.set_xlabel("Length (m)")
+    ax.set_ylabel("Moment (kNm)")
+    return fig
 
 def run():
     st.title("🌉 Beam Load Analysis Tool")
@@ -50,7 +51,8 @@ def run():
         st.write(f"Max Shear: {max_shear:.2f} kN")
         st.write(f"Deflection: {deflection:.4f} m")
         
-        plot_beam(length, uniform_load, point_load, point_pos)
+        fig = plot_beam(length, uniform_load, point_load, point_pos)
+        st.pyplot(fig)
 
         # Export to Excel
         st.markdown("---")
