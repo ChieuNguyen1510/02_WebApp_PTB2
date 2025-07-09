@@ -151,10 +151,10 @@ GROUPED_APPS = {
     "concrete": [
         {"key": "Section Calculator", "icon": "📐", "func": getattr(app7_Structural_Section_Calculator, "run", None)},
         {"key": "Column PM Interaction", "icon": "📉", "func": getattr(app8_Column_PMM_Interaction, "run", None)},
-        {"key": "Beam Load Analysis Tool", "icon": "📉", "func": getattr(app12_Beam_Load_Analysis_Tool, "run", None)},
-        {"key": "Column Load Capacity", "icon": "📉", "func": getattr(app13_Column_Load_Capacity, "run", None)},
-        {"key": "Punching Shear", "icon": "📉", "func": getattr(app14_Punching_Shear, "run", None)},
-        {"key": "Column Slenderness", "icon": "📉", "func": getattr(app15_Column_Slenderness, "run", None)},
+        {"key": "Beam Load Analysis Tool", "icon": "🧮", "func": getattr(app12_Beam_Load_Analysis_Tool, "run", None)},
+        {"key": "Column Load Capacity", "icon": "🏗️", "func": getattr(app13_Column_Load_Capacity, "run", None)},
+        {"key": "Punching Shear", "icon": "📚", "func": getattr(app14_Punching_Shear, "run", None)},
+        {"key": "Column Slenderness", "icon": "📥", "func": getattr(app15_Column_Slenderness, "run", None)},
     ],
     "steel": [
         {"key": "Anchor Bolt Capacity", "icon": "🔧", "func": getattr(app9_Anchor_Bolt_Capacity, "run", None)},
@@ -186,6 +186,8 @@ if st.session_state.selected_app is None:
                     st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
 
+
+print("📱 🔁 🧮 📏 📐 📊 📈 📉 📦 📍 🏗️ 🧱 🔩 🧲 🧰 🛠️ 🔧 ⚙️ 💾 📥 📤 📂 📄 📘 📋 🧑‍🔬 🧑‍💻 🖼️ 💡 📚 📌 🧭 🔒")
 # ----------------- App con -----------------
 else:
     with st.sidebar:
