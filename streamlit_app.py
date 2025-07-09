@@ -154,7 +154,7 @@ GROUPED_APPS = {
         {"key": "Beam Load Analysis Tool", "icon": "🧮", "func": getattr(app12_Beam_Load_Analysis_Tool, "run", None)},
         {"key": "Column Load Capacity", "icon": "🏗️", "func": getattr(app13_Column_Load_Capacity, "run", None)},
         {"key": "Punching Shear", "icon": "📚", "func": getattr(app14_Punching_Shear, "run", None)},
-        {"key": "Column Slenderness", "icon": "📥", "func": getattr(app15_Column_Slenderness, "run", None)},
+        {"key": "Column Slenderness", "icon": "🧭", "func": getattr(app15_Column_Slenderness, "run", None)},
     ],
     "steel": [
         {"key": "Anchor Bolt Capacity", "icon": "🔧", "func": getattr(app9_Anchor_Bolt_Capacity, "run", None)},
