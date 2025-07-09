@@ -29,7 +29,7 @@ def calculate_column_capacity(b, h, As, fc, fy, P, M):
 
     return P_u, M_u_max, status
 
-def plot_pm_interaction(P_u, M_u_max, P, M):
+def plot_pm_interaction(P_u, M_u_max, P, M, h):
     fig, ax = plt.subplots()
     P_values = np.linspace(0, P_u, 100)
     M_values = P_values * (h / 2000)  # Linear approximation
@@ -63,7 +63,7 @@ def run():
         st.write(f"Max Allowable Moment (M_u_max): {M_u_max:.2f} kNm")
         st.write(f"Status: {status}")
 
-        fig = plot_pm_interaction(P_u, M_u_max, P, M)
+        fig = plot_pm_interaction(P_u, M_u_max, P, M, h)
         st.pyplot(fig)
 
         # Export to Excel
