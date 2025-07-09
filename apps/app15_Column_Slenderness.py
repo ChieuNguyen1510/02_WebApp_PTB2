@@ -43,10 +43,12 @@ def run():
         lambda_val = L / r
 
         st.markdown("### 📊 Results")
-        st.write(f"Effective Length (L) = **{L:.2f} mm**")
-        st.write(f"Radius of Gyration (r) = **{r:.2f} mm**")
-        st.write(f"Slenderness ratio λ = **{lambda_val:.2f}**")
-        st.write(f"Limit value λ<sub>lim</sub> = **{lambda_lim}** ({code})", unsafe_allow_html=True)
+        st.write(f"**Effective Length (L<sub>eff</sub>) = L_actual × k = {L_actual:.0f} × {boundary_factors[bc]} = {L:.2f} mm**", unsafe_allow_html=True)
+        st.write(f"**Moment of Inertia I = (b × h³) / 12 = ({b:.0f} × {h:.0f}³) / 12 = {I:.2e} mm⁴**")
+        st.write(f"**Area A = b × h = {b:.0f} × {h:.0f} = {A:.0f} mm²**")
+        st.write(f"**Radius of Gyration (r) = √(I/A) = √({I:.2e}/{A:.0f}) = {r:.2f} mm**")
+        st.write(f"**Slenderness ratio λ = L / r = {L:.2f} / {r:.2f} = {lambda_val:.2f}**")
+        st.write(f"**Limit value λ<sub>lim</sub> = {lambda_lim} ({code})**", unsafe_allow_html=True)
 
         if lambda_val <= lambda_lim:
             st.success("✅ The column is considered **short (non-slender)**.")
@@ -55,9 +57,19 @@ def run():
 
         # Export kết quả ra Excel
         df = pd.DataFrame({
-            "Parameter": ["Actual Length", "Boundary Factor", "Effective Length", "Section Width", "Section Height", "Radius of Gyration", "λ", "λ_lim", "Status"],
-            "Value": [L_actual, boundary_factors[bc], L, b, h, r, lambda_val, lambda_lim, "Short" if lambda_val <= lambda_lim else "Slender"],
-            "Unit": ["mm", "-", "mm", "mm", "mm", "mm", "-", "-", ""]
+            "Parameter": [
+                "Actual Length", "Boundary Factor", "Effective Length", "Section Width", "Section Height",
+                "Moment of Inertia", "Area", "Radius of Gyration", "λ", "λ_lim", "Status"
+            ],
+            "Value": [
+                L_actual, boundary_factors[bc], L, b, h,
+                I, A, r, lambda_val, lambda_lim,
+                "Short" if lambda_val <= lambda_lim else "Slender"
+            ],
+            "Unit": [
+                "mm", "-", "mm", "mm", "mm",
+                "mm⁴", "mm²", "mm", "-", "-", ""
+            ]
         })
 
         output = BytesIO()
