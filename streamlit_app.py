@@ -92,6 +92,7 @@ LANG = {
             "Shear Stud Design": "Shear Stud Design",
             "Beam Load Analysis Tool": "Beam Load Analysis Tool",
             "Column Load Capacity": "Column Load Capacity"
+            "Punching Shear": "Punching Shear"
         }
     },
     "vi": {
@@ -118,6 +119,7 @@ LANG = {
             "Shear Stud Design": "Kiểm tra cắt bulong",
             "Beam Load Analysis Tool": "Tính toán dầm BTCT",
             "Column Load Capacity": "Kiểm tra cột",
+            "Punching Shear": "Chọc thủng sàn",
         }
     }
 }
