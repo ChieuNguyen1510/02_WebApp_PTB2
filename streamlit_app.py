@@ -16,6 +16,7 @@ st.markdown("""
         [data-testid="manage-app-button"] { display: none !important; }
 
         div.stButton > button {
+       		background-color: #f9f9f9;
             width: 100%;
             padding: 12px;
             font-size: 16px;
