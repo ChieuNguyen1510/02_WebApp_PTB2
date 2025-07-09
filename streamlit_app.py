@@ -1,11 +1,11 @@
 import streamlit as st
 
 # Load modules an toàn
-# try:
-from apps import *
-# except ImportError as e:
-#     st.error(f"Failed to load app modules: {str(e)}")
-#     st.stop()
+try:
+	from apps import *
+except ImportError as e:
+    st.error(f"Failed to load app modules: {str(e)}")
+    st.stop()
 
 st.set_page_config(page_title="General Engineering Toolkit", layout="centered")
 

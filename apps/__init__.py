@@ -23,6 +23,6 @@ __all__ = [
     "app8_Column_PMM_Interaction",
     "app9_Anchor_Bolt_Capacity",
     "app10_Base_Plate_Checker",
-    "app11_Shear_Stud_Design"
+    "app11_Shear_Stud_Design",
     "app12_Beam_Load_Analysis_Tool"
 ]
