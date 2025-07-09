@@ -1,48 +1,65 @@
 import streamlit as st
-import math
+import pandas as pd
+from io import BytesIO
 
-# ========== Hàm tính toán ==========
-def punching_shear_check(d, column_x, column_y, V_ed, f_ck):
-    # Tham số vật liệu và hệ số
-    f_cd = f_ck / 1.5  # MPa
-    k = min(1 + math.sqrt(200 / d), 2.0)  # theo EC2
-    v_rd_c = 0.18 * k * (f_cd)**(2/3)  # MPa
+# Eurocode và TCVN các hệ số khuyến nghị
+standards = {
+    "Eurocode 2": {
+        "lambda_lim": 90,  # Giới hạn độ mảnh với cột chịu nén đồng tâm
+    },
+    "TCVN 5574:2018": {
+        "lambda_lim": 70,  # Hệ số giới hạn độ mảnh với cột chịu nén
+    }
+}
 
-    # Chu vi kiểm tra u = chu vi tại khoảng cách d quanh cột
-    u = 2 * (column_x + column_y + 2 * math.pi * d)  # mm
-    A = u * d  # diện tích cắt (mm^2)
-    V_rd = v_rd_c * A / 1e3  # đổi sang kN
-
-    # Kiểm tra
-    status = "✅ Safe" if V_ed <= V_rd else "❌ Unsafe"
-    return V_rd, status, k, v_rd_c, A
-
-# ========== Giao diện ==========
 def run():
-    st.title("🕳️ Slab Punching Shear Check")
+    st.title("📏 Column Slenderness Check")
 
-    st.markdown("Enter slab and column properties:")
-    d = st.number_input("Effective Depth d (mm)", value=180.0)
-    column_x = st.number_input("Column Width x (mm)", value=400.0)
-    column_y = st.number_input("Column Width y (mm)", value=400.0)
-    V_ed = st.number_input("Design Shear Force Vₑₓ (kN)", value=450.0)
-    f_ck = st.number_input("Concrete Grade fₐₚ (MPa)", value=30.0)
+    # ===== Chọn tiêu chuẩn =====
+    code = st.selectbox("Select design standard:", list(standards.keys()))
+    lambda_lim = standards[code]["lambda_lim"]
 
-    if st.button("🔍 Check Punching Shear"):
-        V_rd, status, k, v_rd_c, A = punching_shear_check(d, column_x, column_y, V_ed, f_ck)
+    st.markdown("### 🔧 Input Parameters")
+    L = st.number_input("Effective Length L (mm)", value=3000.0, min_value=100.0)
+    r = st.number_input("Radius of Gyration r (mm)", value=50.0, min_value=1.0)
 
-        st.markdown("### ✅ Result")
-        st.write(f"Design punching shear resistance **V<sub>Rd</sub> = {V_rd:.2f} kN**", unsafe_allow_html=True)
-        st.write(f"Status: {status}")
+    # ===== Điều kiện biên minh họa =====
+    st.markdown("""
+    #### 🔒 Boundary Conditions (for estimating L)
+    - **Pinned - Pinned**: L = actual length
+    - **Fixed - Free**: L = 2 × actual length
+    - **Fixed - Fixed**: L = 0.7 × actual length
+    """)
 
-        # Hiển thị công thức
-        st.markdown("---")
-        st.markdown("### 📘 Calculation Explanation")
-        st.latex(r"k = \min\left(1 + \sqrt{\frac{200}{d}}, 2.0\right) = %.2f" % k)
-        st.latex(r"v_{Rd,c} = 0.18 \cdot k \cdot f_{cd}^{2/3} = %.2f\ \text{MPa}" % v_rd_c)
-        st.latex(r"u = 2(x + y + 2\pi d) = %.0f\ \text{mm}" % (2 * (column_x + column_y + 2 * math.pi * d)))
-        st.latex(r"A = u \cdot d = %.0f\ \text{mm}^2" % A)
-        st.latex(r"V_{Rd} = v_{Rd,c} \cdot A = %.2f\ \text{kN}" % V_rd)
+    if st.button("Check Slenderness"):
+        lambda_val = L / r
 
-# if __name__ == "__main__":
-#     run()
+        st.markdown("### 📊 Results")
+        st.write(f"Slenderness ratio λ = **{lambda_val:.2f}**")
+        st.write(f"Limit value λ<sub>lim</sub> = **{lambda_lim}** ({code})", unsafe_allow_html=True)
+
+        if lambda_val <= lambda_lim:
+            st.success("✅ The column is considered **short (non-slender)**.")
+        else:
+            st.error("❌ The column is considered **slender**, second-order effects should be considered.")
+
+        # Export kết quả ra Excel
+        df = pd.DataFrame({
+            "Parameter": ["Effective Length", "Radius of Gyration", "λ", "λ_lim", "Status"],
+            "Value": [L, r, lambda_val, lambda_lim, "Short" if lambda_val <= lambda_lim else "Slender"],
+            "Unit": ["mm", "mm", "-", "-", ""]
+        })
+
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
+            df.to_excel(writer, index=False, sheet_name="Slenderness Check")
+
+        st.download_button(
+            "📥 Download Excel Report",
+            data=output.getvalue(),
+            file_name="column_slenderness_check.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+
+if __name__ == '__main__':
+    run()
