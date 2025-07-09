@@ -92,8 +92,8 @@ LANG = {
             "Shear Stud Design": "Shear Stud Design",
             "Beam Load Analysis Tool": "Beam Load Analysis Tool",
             "Column Load Capacity": "Column Load Capacity",
-            "Punching Shear": "Punching Shear"
-            "Column Slenderness": "Column Slenderness"
+            "Punching Shear": "Punching Shear",
+            "Column Slenderness": "Column Slenderness",
         }
     },
     "vi": {
