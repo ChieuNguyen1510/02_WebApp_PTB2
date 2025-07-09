@@ -66,5 +66,5 @@ def run():
             df.to_excel(writer, index=False, sheet_name="BeamAnalysis")
         st.download_button("📥 Download file", data=output.getvalue(), file_name="beam_analysis.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
-if __name__ == "__main__":
-    run()
+# if __name__ == "__main__":
+#     run()

@@ -114,7 +114,7 @@ LANG = {
             "Anchor Bolt Capacity": "Kiểm tra bulong",
             "Base Plate Checker": "Kiểm tra bản đế",
             "Shear Stud Design": "Kiểm tra cắt bulong",
-            "Beam Load Analysis Tool": "Tính toán dầm BTCT"
+            "Beam Load Analysis Tool": "Tính toán dầm BTCT",
         }
     }
 }
